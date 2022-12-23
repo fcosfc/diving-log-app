@@ -1,5 +1,6 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import java.util.List;
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
+import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 
 /**
  * Clase adaptador para mostrar los elementos de la lista de inmersiones
@@ -70,6 +72,12 @@ public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHo
     public void onBindViewHolder(@NonNull DiveListAdapter.ViewHolder holder, int position) {
         holder.getPlaceTextView().setText(diveList.get(position).getPlace());
         holder.getDateTextView().setText(diveList.get(position).getFormatedDiveDate());
+
+        if(position %2 == 0) {
+            holder.itemView.setBackgroundColor(Color.parseColor(Constant.PAR_ROWS_COLOR));
+        } else {
+            holder.itemView.setBackgroundColor(Color.parseColor(Constant.ODD_ROWS_COLOR));
+        }
     }
 
     @Override

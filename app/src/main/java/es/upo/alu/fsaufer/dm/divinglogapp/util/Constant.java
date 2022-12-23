@@ -10,4 +10,7 @@ public class Constant {
     public static final String MINUTES = "minutes";
     public static final String MAX_DEPTH = "max_depth";
     public static final String REMARKS = "remarks";
+
+    public static final String ODD_ROWS_COLOR = "#F0F0F3";
+    public static final String PAR_ROWS_COLOR = "#FCFCFF";
 }
