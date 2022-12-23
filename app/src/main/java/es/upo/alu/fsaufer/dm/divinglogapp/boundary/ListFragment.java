@@ -42,8 +42,15 @@ public class ListFragment extends Fragment implements DiveClickListener {
     @Override
     public void onClick(View view, int position) {
         Dive dive = DiveRepository.getDiveList().get(position);
+
         Intent intent = new Intent(getActivity(), DiveDetail.class);
-        intent.putExtra(Constant.LOCATION, dive.getPlace());
+        intent.putExtra(Constant.LOCATION, dive.getLocation());
+        intent.putExtra(Constant.SPOT, dive.getSpot());
+        intent.putExtra(Constant.DIVE_DATE, dive.getFormatedDiveDate());
+        intent.putExtra(Constant.MINUTES, dive.getMinutes());
+        intent.putExtra(Constant.MAX_DEPTH, dive.getMaxDepth());
+        intent.putExtra(Constant.REMARKS, dive.getRemarks());
+
         startActivity(intent);
     }
 }
