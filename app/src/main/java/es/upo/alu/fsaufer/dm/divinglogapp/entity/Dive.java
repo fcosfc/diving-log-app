@@ -5,13 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
+
 /**
  * Clase que implementa una inmersión
  */
 public class Dive {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-
     private int diveId;
     private String location;
     private String spot;
@@ -69,7 +68,7 @@ public class Dive {
     }
 
     public String getFormatedDiveDate() {
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
 
         return dateFormat.format(diveDate);
     }

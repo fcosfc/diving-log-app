@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
+import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 
 /**
  * Clase que implementa la persistencia de la APP
@@ -25,15 +27,8 @@ public class DiveDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "DivingLog.db";
     private static final int DATABASE_VERSION = 1;
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    
     private static final String TABLE_NAME = "dives";
-    private static final String COL_DIVE_ID = "dive_id";
-    private static final String COL_LOCATION = "location";
-    private static final String COL_SPOT = "spot";
-    private static final String COL_DIVE_DATE = "dive_date";
-    private static final String COL_MINUTES = "minutes";
-    private static final String COL_MAX_DEPTH = "max_depth";
-    private static final String COL_REMARKS = "remarks";
 
     private final Context context;
 
@@ -47,13 +42,13 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("CREATE TABLE ").append(TABLE_NAME);
         sqlBuilder.append("(");
-        sqlBuilder.append(COL_DIVE_ID).append("primary key autoincrement, ");
-        sqlBuilder.append(COL_LOCATION).append(" text not null, ");
-        sqlBuilder.append(COL_SPOT).append(" text not null, ");
-        sqlBuilder.append(COL_DIVE_DATE).append(" text not null, ");
-        sqlBuilder.append(COL_MINUTES).append(" integer not null, ");
-        sqlBuilder.append(COL_MAX_DEPTH).append(" real not null, ");
-        sqlBuilder.append(COL_REMARKS).append(" text");
+        sqlBuilder.append(Constant.DIVE_ID).append("primary key autoincrement, ");
+        sqlBuilder.append(Constant.LOCATION).append(" text not null, ");
+        sqlBuilder.append(Constant.SPOT).append(" text not null, ");
+        sqlBuilder.append(Constant.DIVE_DATE).append(" text not null, ");
+        sqlBuilder.append(Constant.MINUTES).append(" integer not null, ");
+        sqlBuilder.append(Constant.MAX_DEPTH).append(" real not null, ");
+        sqlBuilder.append(Constant.REMARKS).append(" text");
         sqlBuilder.append(")");
         
         db.execSQL(sqlBuilder.toString());
@@ -69,10 +64,10 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         List<Dive> diveList = null;
         SQLiteDatabase db = this.getWritableDatabase();
         String[] columns = new String[] {
-            COL_DIVE_ID, COL_LOCATION, COL_SPOT, COL_DIVE_DATE, COL_MINUTES, COL_MAX_DEPTH, COL_REMARKS    
+            Constant.DIVE_ID, Constant.LOCATION, Constant.SPOT, Constant.DIVE_DATE, Constant.MINUTES, Constant.MAX_DEPTH, Constant.REMARKS    
         };
 
-        Cursor cursor = db.query(TABLE_NAME, columns, null, null,null, null, COL_DIVE_DATE + " DESC");
+        Cursor cursor = db.query(TABLE_NAME, columns, null, null,null, null, Constant.DIVE_DATE + " DESC");
 
         if (cursor.getCount() != 0) {
             diveList = new ArrayList<>(cursor.getCount());
@@ -106,18 +101,18 @@ public class DiveDbHelper extends SQLiteOpenHelper {
             insertDemoDive(db, dive);
         }
 
-        Toast.makeText(context.getApplicationContext(), "Datos de ejemplo cargados", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, R.string.demo_data_loaded, Toast.LENGTH_LONG).show();
     }
 
     private void insertDemoDive(SQLiteDatabase db, Dive dive) {
         ContentValues values = new ContentValues();
 
-        values.put(COL_LOCATION, dive.getLocation());
-        values.put(COL_SPOT, dive.getSpot());
-        values.put(COL_DIVE_DATE, dive.getFormatedDiveDate());
-        values.put(COL_MINUTES, dive.getMinutes());
-        values.put(COL_MAX_DEPTH, dive.getMaxDepth());
-        values.put(COL_REMARKS, dive.getRemarks());
+        values.put(Constant.LOCATION, dive.getLocation());
+        values.put(Constant.SPOT, dive.getSpot());
+        values.put(Constant.DIVE_DATE, dive.getFormatedDiveDate());
+        values.put(Constant.MINUTES, dive.getMinutes());
+        values.put(Constant.MAX_DEPTH, dive.getMaxDepth());
+        values.put(Constant.REMARKS, dive.getRemarks());
 
         db.insert(TABLE_NAME, null, values);
     }
@@ -138,7 +133,7 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         demoDiveList.add(dive);
         dive = new Dive("Ceuta", "Ciclón de fuera", getDate("2022-04-01"), 40, 41.1f, "Magnífica inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "Ciclón de dentro", getDate("2022-04-01"), 38, 15.1f, "Mucha vida");
+        dive = new Dive("Ceuta", "Ciclón de dentro", getDate("2022-04-01"), 38, 15.1f, "Mucha vida");
         demoDiveList.add(dive);
         dive = new Dive("Tarifa", "La Garita", getDate("2022-05-25"), 62, 15.1f, "Buena inmersión");
         demoDiveList.add(dive);
@@ -155,7 +150,7 @@ public class DiveDbHelper extends SQLiteOpenHelper {
     }
 
     private Date getDate(String dateString) {
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
         Date date = null;
 
         try {

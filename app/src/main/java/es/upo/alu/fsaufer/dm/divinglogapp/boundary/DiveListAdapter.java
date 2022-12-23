@@ -19,14 +19,18 @@ import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
  */
 public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHolder> {
 
+    private final DiveClickListener diveClickListener;
+
     private final List<Dive> diveList;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView placeTextView;
         private final TextView dateTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(this);
 
             placeTextView = itemView.findViewById(R.id.placeTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
@@ -39,9 +43,17 @@ public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHo
         public TextView getDateTextView() {
             return dateTextView;
         }
+
+        @Override
+        public void onClick(View view) {
+            if (diveClickListener != null) {
+                diveClickListener.onClick(view, getAdapterPosition());
+            }
+        }
     }
 
-    public DiveListAdapter() {
+    public DiveListAdapter(DiveClickListener diveClickListener) {
+        this.diveClickListener = diveClickListener;
         diveList = DiveRepository.getDiveList();
     }
 
@@ -49,7 +61,7 @@ public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHo
     @Override
     public DiveListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dive_item_layout, parent, false);
+                .inflate(R.layout.dive_item_list, parent, false);
 
         return new ViewHolder(view);
     }
