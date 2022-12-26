@@ -23,4 +23,8 @@ public class DiveRepository {
     public static List<Dive> getDiveList() {
         return diveList;
     }
+
+    public static void save(Dive dive) {
+        diveDbHelper.save(dive);
+    }
 }

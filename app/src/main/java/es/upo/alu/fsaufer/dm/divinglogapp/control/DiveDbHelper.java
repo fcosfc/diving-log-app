@@ -19,6 +19,7 @@ import java.util.List;
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
+import es.upo.alu.fsaufer.dm.divinglogapp.util.DateParser;
 
 /**
  * Clase que implementa la persistencia de la APP
@@ -79,7 +80,7 @@ public class DiveDbHelper extends SQLiteOpenHelper {
                 dive.setDiveId(cursor.getInt(0));
                 dive.setLocation(cursor.getString(1));
                 dive.setSpot(cursor.getString(2));
-                dive.setDiveDate(getDate(cursor.getString(3)));
+                dive.setDiveDate(DateParser.getDate(cursor.getString(3)));
                 dive.setMinutes(cursor.getInt(4));
                 dive.setMaxDepth(cursor.getFloat(5));
                 dive.setRemarks(cursor.getString(6));
@@ -98,13 +99,32 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         List<Dive> demoDiveList = getDemoDiveList();
 
         for (Dive dive : demoDiveList) {
-            insertDemoDive(db, dive);
+            insertDive(db, getContentValues(dive));
         }
 
         Toast.makeText(context, R.string.demo_data_loaded, Toast.LENGTH_LONG).show();
     }
 
-    private void insertDemoDive(SQLiteDatabase db, Dive dive) {
+    public void save(Dive dive) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = getContentValues(dive);
+
+        if(dive.getDiveId() == 0) {
+            insertDive(db, values);
+        } else {
+            updateDive(db, values, dive.getDiveId());
+        }
+    }
+
+    private void insertDive(SQLiteDatabase db, ContentValues values) {
+        db.insert(TABLE_NAME, null, values);
+    }
+
+    private void updateDive(SQLiteDatabase db, ContentValues values, int diveId) {
+        db.update(TABLE_NAME, values, Constant.DIVE_ID + "=", new String[]{Integer.toString(diveId)});
+    }
+
+    private ContentValues getContentValues(Dive dive) {
         ContentValues values = new ContentValues();
 
         values.put(Constant.LOCATION, dive.getLocation());
@@ -114,52 +134,39 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         values.put(Constant.MAX_DEPTH, dive.getMaxDepth());
         values.put(Constant.REMARKS, dive.getRemarks());
 
-        db.insert(TABLE_NAME, null, values);
+        return values;
     }
 
     private List<Dive> getDemoDiveList() {
         List<Dive> demoDiveList = new ArrayList<>();
         Dive dive;
 
-        dive = new Dive("Tarifa", "La Garita", getDate("2022-01-08"), 55, 15.2f, "Buena inmersión");
+        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-01-08"), 55, 15.2f, "Buena inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "Las piscinas", getDate("2022-01-24"), 45, 25.1f, "Fuimos a las laminarias");
+        dive = new Dive("Tarifa", "Las piscinas", DateParser.getDate("2022-01-24"), 45, 25.1f, "Fuimos a las laminarias");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "Punta marroquí", getDate("2022-02-10"), 38, 40.2f, "Una pasada");
+        dive = new Dive("Tarifa", "Punta marroquí", DateParser.getDate("2022-02-10"), 38, 40.2f, "Una pasada");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "La Garita", getDate("2022-02-28"), 60, 14.1f, "Buena inmersión");
+        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-02-28"), 60, 14.1f, "Buena inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "Poniente", getDate("2022-03-15"), 48, 20.4f, "Bancos de peces");
+        dive = new Dive("Tarifa", "Poniente", DateParser.getDate("2022-03-15"), 48, 20.4f, "Bancos de peces");
         demoDiveList.add(dive);
-        dive = new Dive("Ceuta", "Ciclón de fuera", getDate("2022-04-01"), 40, 41.1f, "Magnífica inmersión");
+        dive = new Dive("Ceuta", "Ciclón de fuera", DateParser.getDate("2022-04-01"), 40, 41.1f, "Magnífica inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Ceuta", "Ciclón de dentro", getDate("2022-04-01"), 38, 15.1f, "Mucha vida");
+        dive = new Dive("Ceuta", "Ciclón de dentro", DateParser.getDate("2022-04-01"), 38, 15.1f, "Mucha vida");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "La Garita", getDate("2022-05-25"), 62, 15.1f, "Buena inmersión");
+        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-05-25"), 62, 15.1f, "Buena inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "La Garita", getDate("2022-06-01"), 55, 15.2f, "Bancos de peces");
+        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-06-01"), 55, 15.2f, "Bancos de peces");
         demoDiveList.add(dive);
-        dive = new Dive("Algeciras", "Bajo del Bono", getDate("2022-06-12"), 48, 38.2f, "Magnífica inmersión");
+        dive = new Dive("Algeciras", "Bajo del Bono", DateParser.getDate("2022-06-12"), 48, 38.2f, "Magnífica inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "La Garita", getDate("2022-07-24"), 55, 15.2f, "Buena inmersión");
+        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-07-24"), 55, 15.2f, "Buena inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "San Andrés", getDate("2022-08-06"), 38, 45.3f, "Espectacular inmersión");
+        dive = new Dive("Tarifa", "San Andrés", DateParser.getDate("2022-08-06"), 38, 45.3f, "Espectacular inmersión");
         demoDiveList.add(dive);
         
         return demoDiveList;
-    }
-
-    private Date getDate(String dateString) {
-        DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
-        Date date = null;
-
-        try {
-            date = dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return date;
     }
 
 }

@@ -7,4 +7,7 @@
     <string name="minutes">Minutos</string>
     <string name="max_depth">Profundidad máxima</string>
     <string name="remarks">Comentarios</string>
+    <string name="new_dive">Nueva inmersión</string>
+    <string name="not_null">Este campo no puede ser nulo</string>
+    <string name="date_not_valid">No es un fecha válida (yyyy-mm-dd)</string>
 </resources>

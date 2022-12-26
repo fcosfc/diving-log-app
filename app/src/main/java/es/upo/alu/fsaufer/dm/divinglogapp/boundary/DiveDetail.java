@@ -8,6 +8,9 @@ import android.widget.TextView;
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 
+/**
+ * Actividad para mostrar el detalle de una inmersión
+ */
 public class DiveDetail extends AppCompatActivity {
 
     @Override
