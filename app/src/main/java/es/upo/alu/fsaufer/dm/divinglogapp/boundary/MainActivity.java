@@ -1,14 +1,13 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;

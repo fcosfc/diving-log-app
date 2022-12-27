@@ -1,10 +1,10 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -15,7 +15,6 @@ import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
-import es.upo.alu.fsaufer.dm.divinglogapp.util.DateParser;
 
 /**
  * Actividad para guardar nuevas inmersiones o editar existentes
@@ -68,7 +67,7 @@ public class EditDive extends AppCompatActivity {
         } else {
             DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
 
-            Date date = null;
+            Date date;
 
             try {
                 date = dateFormat.parse(value);
@@ -101,9 +100,7 @@ public class EditDive extends AppCompatActivity {
 
         dive.setRemarks(remarks.getText().toString().trim());
 
-        if (formHasErrors) {
-            return;
-        } else {
+        if (!formHasErrors) {
             DiveRepository.save(dive);
 
             finish();

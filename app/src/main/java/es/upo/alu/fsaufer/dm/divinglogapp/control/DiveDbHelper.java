@@ -5,18 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.DateParser;
@@ -31,11 +25,8 @@ public class DiveDbHelper extends SQLiteOpenHelper {
     
     private static final String TABLE_NAME = "dives";
 
-    private final Context context;
-
     public DiveDbHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
     @Override
@@ -101,8 +92,6 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         for (Dive dive : demoDiveList) {
             insertDive(db, getContentValues(dive));
         }
-
-        Toast.makeText(context, R.string.demo_data_loaded, Toast.LENGTH_LONG).show();
     }
 
     public void save(Dive dive) {

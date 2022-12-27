@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class DateParser {
 
-    private static DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
+    private static final DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
 
     public static  Date getDate(String dateString) {
         Date date = null;
