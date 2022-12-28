@@ -12,7 +12,7 @@ import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 /**
  * Actividad para mostrar el detalle de una inmersión
  */
-public class DiveDetail extends AppCompatActivity {
+public class DiveDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

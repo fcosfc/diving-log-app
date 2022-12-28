@@ -21,9 +21,7 @@ import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 /**
  * Actividad para guardar nuevas inmersiones o editar existentes
  */
-public class EditDive extends AppCompatActivity {
-
-    private DiveListAdapter adapter;
+public class EditDiveActivity extends AppCompatActivity {
 
     private EditText location, spot, diveDate, minutes, maxDepth, remarks;
 
@@ -31,8 +29,6 @@ public class EditDive extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_dive);
-
-        adapter = (DiveListAdapter) getIntent().getSerializableExtra(Constant.ADAPTER);
 
         location = findViewById(R.id.locationEditText);
         spot = findViewById(R.id.spotEditText);
@@ -116,8 +112,6 @@ public class EditDive extends AppCompatActivity {
             DiveRepository.save(dive);
 
             Toast.makeText(getApplicationContext(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
-
-            adapter.notifyDataSetChanged();
 
             finish();
         }
