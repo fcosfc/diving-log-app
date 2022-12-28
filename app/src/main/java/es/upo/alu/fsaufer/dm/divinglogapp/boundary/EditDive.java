@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -114,7 +115,9 @@ public class EditDive extends AppCompatActivity {
         if (!formHasErrors) {
             DiveRepository.save(dive);
 
-            adapter.notifyItemInserted(0);
+            Toast.makeText(getApplicationContext(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
+
+            adapter.notifyDataSetChanged();
 
             finish();
         }

@@ -13,4 +13,5 @@
     <string name="new_dive">Nueva inmersión</string>
     <string name="not_null">Este campo no puede ser nulo</string>
     <string name="date_not_valid">No es un fecha válida (yyyy-mm-dd)</string>
+    <string name="saved">Registro guardado</string>
 </resources>
