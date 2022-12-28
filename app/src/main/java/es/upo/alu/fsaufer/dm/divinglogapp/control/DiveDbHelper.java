@@ -13,7 +13,7 @@ import java.util.List;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
-import es.upo.alu.fsaufer.dm.divinglogapp.util.DateParser;
+import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
 
 /**
  * Clase que implementa la persistencia de la APP
@@ -71,7 +71,7 @@ public class DiveDbHelper extends SQLiteOpenHelper {
                 dive.setDiveId(cursor.getInt(0));
                 dive.setLocation(cursor.getString(1));
                 dive.setSpot(cursor.getString(2));
-                dive.setDiveDate(DateParser.getDate(cursor.getString(3)));
+                dive.setDiveDate(DateUtil.parseDate(cursor.getString(3)));
                 dive.setMinutes(cursor.getInt(4));
                 dive.setMaxDepth(cursor.getFloat(5));
                 dive.setRemarks(cursor.getString(6));
@@ -130,29 +130,29 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         List<Dive> demoDiveList = new ArrayList<>();
         Dive dive;
 
-        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-01-08"), 55, 15.2f, "Buena inmersión");
+        dive = new Dive("Tarifa", "La Garita", DateUtil.parseDate("2022-01-08"), 55, 15.2f, "Buena inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "Las piscinas", DateParser.getDate("2022-01-24"), 45, 25.1f, "Fuimos a las laminarias");
+        dive = new Dive("Tarifa", "Las piscinas", DateUtil.parseDate("2022-01-24"), 45, 25.1f, "Fuimos a las laminarias");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "Punta marroquí", DateParser.getDate("2022-02-10"), 38, 40.2f, "Una pasada");
+        dive = new Dive("Tarifa", "Punta marroquí", DateUtil.parseDate("2022-02-10"), 38, 40.2f, "Una pasada");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-02-28"), 60, 14.1f, "Buena inmersión");
+        dive = new Dive("Tarifa", "La Garita", DateUtil.parseDate("2022-02-28"), 60, 14.1f, "Buena inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "Poniente", DateParser.getDate("2022-03-15"), 48, 20.4f, "Bancos de peces");
+        dive = new Dive("Tarifa", "Poniente", DateUtil.parseDate("2022-03-15"), 48, 20.4f, "Bancos de peces");
         demoDiveList.add(dive);
-        dive = new Dive("Ceuta", "Ciclón de fuera", DateParser.getDate("2022-04-01"), 40, 41.1f, "Magnífica inmersión");
+        dive = new Dive("Ceuta", "Ciclón de fuera", DateUtil.parseDate("2022-04-01"), 40, 41.1f, "Magnífica inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Ceuta", "Ciclón de dentro", DateParser.getDate("2022-04-01"), 38, 15.1f, "Mucha vida");
+        dive = new Dive("Ceuta", "Ciclón de dentro", DateUtil.parseDate("2022-04-01"), 38, 15.1f, "Mucha vida");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-05-25"), 62, 15.1f, "Buena inmersión");
+        dive = new Dive("Tarifa", "La Garita", DateUtil.parseDate("2022-05-25"), 62, 15.1f, "Buena inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-06-01"), 55, 15.2f, "Bancos de peces");
+        dive = new Dive("Tarifa", "La Garita", DateUtil.parseDate("2022-06-01"), 55, 15.2f, "Bancos de peces");
         demoDiveList.add(dive);
-        dive = new Dive("Algeciras", "Bajo del Bono", DateParser.getDate("2022-06-12"), 48, 38.2f, "Magnífica inmersión");
+        dive = new Dive("Algeciras", "Bajo del Bono", DateUtil.parseDate("2022-06-12"), 48, 38.2f, "Magnífica inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "La Garita", DateParser.getDate("2022-07-24"), 55, 15.2f, "Buena inmersión");
+        dive = new Dive("Tarifa", "La Garita", DateUtil.parseDate("2022-07-24"), 55, 15.2f, "Buena inmersión");
         demoDiveList.add(dive);
-        dive = new Dive("Tarifa", "San Andrés", DateParser.getDate("2022-08-06"), 38, 45.3f, "Espectacular inmersión");
+        dive = new Dive("Tarifa", "San Andrés", DateUtil.parseDate("2022-08-06"), 38, 45.3f, "Espectacular inmersión");
         demoDiveList.add(dive);
         
         return demoDiveList;

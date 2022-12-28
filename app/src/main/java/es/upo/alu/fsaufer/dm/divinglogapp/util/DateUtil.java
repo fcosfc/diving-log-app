@@ -8,11 +8,11 @@ import java.util.Date;
 /**
  * Utilidad para fechas
  */
-public class DateParser {
+public class DateUtil {
 
     private static final DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
 
-    public static  Date getDate(String dateString) {
+    public static  Date parseDate(String dateString) {
         Date date = null;
 
         try {
@@ -22,6 +22,10 @@ public class DateParser {
         }
 
         return date;
+    }
+
+    public static String formatDate(Date date) {
+        return dateFormat.format(date);
     }
 
 }

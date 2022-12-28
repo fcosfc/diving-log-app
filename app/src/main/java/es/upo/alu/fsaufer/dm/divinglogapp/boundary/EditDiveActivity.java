@@ -17,6 +17,7 @@ import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
+import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
 
 /**
  * Actividad para guardar nuevas inmersiones o editar existentes
@@ -35,6 +36,7 @@ public class EditDiveActivity extends AppCompatActivity {
         location = findViewById(R.id.locationEditText);
         spot = findViewById(R.id.spotEditText);
         diveDate = findViewById(R.id.diveDateEditTextDate);
+        diveDate.setText(DateUtil.formatDate(new Date()));
         minutes = findViewById(R.id.minutesEditTextNumber);
         maxDepth = findViewById(R.id.maxDepthEditTextNumberDecimal);
         remarks = findViewById(R.id.remarksEditTextTextMultiLine);
