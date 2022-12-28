@@ -3,7 +3,6 @@ package es.upo.alu.fsaufer.dm.divinglogapp.util;
 public class Constant {
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
-    public static final String ADAPTER = "adapter";
     public static final String DIVE = "dive";
     public static final String DIVE_ID = "dive_id";
     public static final String LOCATION = "location";

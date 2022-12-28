@@ -23,6 +23,8 @@ import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
  */
 public class EditDiveActivity extends AppCompatActivity {
 
+    private int formResult = RESULT_CANCELED;
+
     private EditText location, spot, diveDate, minutes, maxDepth, remarks;
 
     @Override
@@ -42,6 +44,13 @@ public class EditDiveActivity extends AppCompatActivity {
 
         Button cancelButton = findViewById(R.id.canceButton);
         cancelButton.setOnClickListener(v -> cancel(v));
+    }
+
+    @Override
+    public void finish() {
+        setResult(formResult);
+
+        super.finish();
     }
 
     public void save(View view) {
@@ -110,6 +119,8 @@ public class EditDiveActivity extends AppCompatActivity {
 
         if (!formHasErrors) {
             DiveRepository.save(dive);
+
+            formResult = RESULT_OK;
 
             Toast.makeText(getApplicationContext(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
 

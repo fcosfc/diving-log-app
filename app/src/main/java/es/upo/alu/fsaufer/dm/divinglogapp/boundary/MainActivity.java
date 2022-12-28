@@ -6,6 +6,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
 
     private DiveListAdapter adapter;
 
+    ActivityResultLauncher<Intent> editDiveLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +42,18 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
         recyclerView.setAdapter(adapter);
 
         DiveRepository.init(this);
+
+        editDiveLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK) {
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+        );
     }
 
     @Override
@@ -49,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent intent = new Intent(this, EditDiveActivity.class);
 
-        startActivity(intent);
+        editDiveLauncher.launch(intent);
 
         return super.onOptionsItemSelected(item);
     }
