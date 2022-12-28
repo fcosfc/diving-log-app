@@ -19,9 +19,9 @@ La aplicación evolucionará desde los requisitos establecidos en la asignatura 
 * Funcionamiento: al entrar en la APP se carga una lista de inmersiones de ejemplo, si se pulsa sobre una de ellas se puede ver el detalle. También se pueden guardar nuevas inmersiones mediante el menú de la APP. 
 * Matriz de cumplimiento de requisitos:
 
-| Requisito | Cumplimiento en APP |
-| --------- | ------------------- |
-| La App debe constar de, al menos, 2 Activities | Tiene tres actividades: MainActivity, DiveDetail y EditDive |
-| Entre dichas actividades se debe pasar información | Se pasa el detalle de inmersión entre MainActivity y DiveDetail |
-| La App debe constar con un servicio de persistencia | Se usa SQLite para almacenar los detalles de las inmersiones |
-| En la App debe hacer uso de al menos un par de tipos de notificaciones | TO DO |
+| Requisito | Cumplimiento en APP                                                               |
+| --------- |-----------------------------------------------------------------------------------|
+| La App debe constar de, al menos, 2 Activities | Tiene tres actividades: MainActivity, DiveDetail y EditDive                       |
+| Entre dichas actividades se debe pasar información | Se pasa el detalle de inmersión entre MainActivity y DiveDetail                   |
+| La App debe constar con un servicio de persistencia | Se usa SQLite para almacenar los detalles de las inmersiones                      |
+| En la App debe hacer uso de al menos un par de tipos de notificaciones | Notificación en barra de estado en primer uso. Toast cuando se guarda un registro |

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Registro de buceo</string>
-    <string name="demo_data_loaded">Datos de ejemplo cargados</string>
     <string name="place">Lugar</string>
     <string name="location">Localidad</string>
     <string name="spot">Punto de inmersión</string>
@@ -14,4 +13,8 @@
     <string name="not_null">Este campo no puede ser nulo</string>
     <string name="date_not_valid">No es un fecha válida (yyyy-mm-dd)</string>
     <string name="saved">Registro guardado</string>
+    <string name="notification_channel_name">DivingLogNotificationChannel</string>
+    <string name="notification_channel_description">Canal de notificaciones para la APP Diving Log</string>
+    <string name="notification_demo_data_loaded_title">Datos de ejemplo cargados</string>
+    <string name="notification_demo_data_loaded_text">Datos de ejemplo cargados en base de datos SQLite. Pulse sobre cada inmersión para ver el detalle</string>
 </resources>

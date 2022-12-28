@@ -1,16 +1,23 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.control;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
@@ -20,13 +27,18 @@ import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
  */
 public class DiveDbHelper extends SQLiteOpenHelper {
 
+    private static final int DEMO_DATA_LOADED_NOTIFICATION_ID = 1;
+
     private static final String DATABASE_NAME = "DivingLog.db";
     private static final int DATABASE_VERSION = 1;
-    
+
     private static final String TABLE_NAME = "dives";
+
+    private final Context context;
 
     public DiveDbHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -42,7 +54,7 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         sqlBuilder.append(Constant.MAX_DEPTH).append(" real not null, ");
         sqlBuilder.append(Constant.REMARKS).append(" text");
         sqlBuilder.append(")");
-        
+
         db.execSQL(sqlBuilder.toString());
 
         loadDemoData(db);
@@ -55,11 +67,11 @@ public class DiveDbHelper extends SQLiteOpenHelper {
     public List<Dive> readAllData() {
         List<Dive> diveList = null;
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] columns = new String[] {
-            Constant.DIVE_ID, Constant.LOCATION, Constant.SPOT, Constant.DIVE_DATE, Constant.MINUTES, Constant.MAX_DEPTH, Constant.REMARKS    
+        String[] columns = new String[]{
+                Constant.DIVE_ID, Constant.LOCATION, Constant.SPOT, Constant.DIVE_DATE, Constant.MINUTES, Constant.MAX_DEPTH, Constant.REMARKS
         };
 
-        Cursor cursor = db.query(TABLE_NAME, columns, null, null,null, null, Constant.DIVE_DATE + " DESC");
+        Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, Constant.DIVE_DATE + " DESC");
 
         if (cursor.getCount() != 0) {
             diveList = new ArrayList<>(cursor.getCount());
@@ -86,19 +98,11 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         return diveList;
     }
 
-    private void loadDemoData(SQLiteDatabase db) {
-        List<Dive> demoDiveList = getDemoDiveList();
-
-        for (Dive dive : demoDiveList) {
-            insertDive(db, getContentValues(dive));
-        }
-    }
-
     public void save(Dive dive) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = getContentValues(dive);
 
-        if(dive.getDiveId() == 0) {
+        if (dive.getDiveId() == 0) {
             insertDive(db, values);
         } else {
             updateDive(db, values, dive.getDiveId());
@@ -124,6 +128,16 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         values.put(Constant.REMARKS, dive.getRemarks());
 
         return values;
+    }
+
+    private void loadDemoData(SQLiteDatabase db) {
+        List<Dive> demoDiveList = getDemoDiveList();
+
+        for (Dive dive : demoDiveList) {
+            insertDive(db, getContentValues(dive));
+        }
+
+        notifyDemoDataLoaded();
     }
 
     private List<Dive> getDemoDiveList() {
@@ -154,8 +168,36 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         demoDiveList.add(dive);
         dive = new Dive("Tarifa", "San Andrés", DateUtil.parseDate("2022-08-06"), 38, 45.3f, "Espectacular inmersión");
         demoDiveList.add(dive);
-        
+
         return demoDiveList;
+    }
+
+    private void notifyDemoDataLoaded() {
+        createNotificationChannel();
+
+        NotificationManagerCompat.from(context).notify(DEMO_DATA_LOADED_NOTIFICATION_ID, buildNotification());
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    Constant.DIVING_LOG_CHANNEL_ID,
+                    context.getString(R.string.notification_channel_name),
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(context.getString(R.string.notification_channel_description));
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private Notification buildNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constant.DIVING_LOG_CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification_icon)
+                .setContentTitle(context.getString(R.string.notification_demo_data_loaded_title))
+                .setContentText(context.getString(R.string.notification_demo_data_loaded_text))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        return builder.build();
     }
 
 }
