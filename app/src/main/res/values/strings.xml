@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Registro de buceo</string>
     <string name="demo_data_loaded">Datos de ejemplo cargados</string>
+    <string name="place">Lugar</string>
     <string name="location">Localidad</string>
     <string name="spot">Punto de inmersión</string>
     <string name="dive_date">Fecha</string>
