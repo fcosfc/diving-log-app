@@ -2,6 +2,7 @@ package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,12 @@ public class EditDive extends AppCompatActivity {
         minutes = findViewById(R.id.minutesEditTextNumber);
         maxDepth = findViewById(R.id.maxDepthEditTextNumberDecimal);
         remarks = findViewById(R.id.remarksEditTextTextMultiLine);
+
+        Button saveButton = findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(v -> save(v));
+
+        Button cancelButton = findViewById(R.id.canceButton);
+        cancelButton.setOnClickListener(v -> cancel(v));
     }
 
     public void save(View view) {

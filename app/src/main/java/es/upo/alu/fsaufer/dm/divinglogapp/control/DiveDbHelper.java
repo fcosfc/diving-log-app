@@ -33,8 +33,8 @@ public class DiveDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("CREATE TABLE ").append(TABLE_NAME);
-        sqlBuilder.append("(");
-        sqlBuilder.append(Constant.DIVE_ID).append("primary key autoincrement, ");
+        sqlBuilder.append(" (");
+        sqlBuilder.append(Constant.DIVE_ID).append(" integer primary key autoincrement, ");
         sqlBuilder.append(Constant.LOCATION).append(" text not null, ");
         sqlBuilder.append(Constant.SPOT).append(" text not null, ");
         sqlBuilder.append(Constant.DIVE_DATE).append(" text not null, ");

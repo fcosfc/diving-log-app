@@ -17,7 +17,7 @@ public class DiveRepository {
     public static void init(Context context) {
         diveDbHelper = new DiveDbHelper(context);
 
-        diveList = diveDbHelper.readAllData();
+        refreshDiveList();
     }
 
     public static List<Dive> getDiveList() {
@@ -26,5 +26,11 @@ public class DiveRepository {
 
     public static void save(Dive dive) {
         diveDbHelper.save(dive);
+
+        refreshDiveList();
+    }
+
+    public static void refreshDiveList() {
+        diveList = diveDbHelper.readAllData();
     }
 }

@@ -1,230 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".boundary.EditDive">
 
-    <TextView
-        android:id="@+id/locationtextViewLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/location"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/spotTextViewLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/spot"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationEditText"
-        app:layout_constraintVertical_bias="0.001" />
+        <TextView
+            android:id="@+id/locationtextViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/diveDatetextViewLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/dive_date"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spotEditText"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/spotTextViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/spot"
+            app:layout_constraintEnd_toEndOf="@+id/locationEditText"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/locationEditText"
+            app:layout_constraintTop_toBottomOf="@+id/locationEditText" />
 
-    <TextView
-        android:id="@+id/maxDepthTextViewLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/max_depth"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/minutesEditTextNumber"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/diveDatetextViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/dive_date"
+            app:layout_constraintEnd_toEndOf="@+id/spotEditText"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/spotEditText"
+            app:layout_constraintTop_toBottomOf="@+id/spotEditText" />
 
-    <TextView
-        android:id="@+id/minutesTextViewLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/minutes"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diveDateEditTextDate"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/maxDepthTextViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/max_depth"
+            app:layout_constraintEnd_toEndOf="@+id/minutesEditTextNumber"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/minutesEditTextNumber"
+            app:layout_constraintTop_toBottomOf="@+id/minutesEditTextNumber" />
 
-    <TextView
-        android:id="@+id/remarksTextViewLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/remarks"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maxDepthEditTextNumberDecimal"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/minutesTextViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/minutes"
+            app:layout_constraintEnd_toEndOf="@+id/diveDateEditTextDate"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/diveDateEditTextDate"
+            app:layout_constraintTop_toBottomOf="@+id/diveDateEditTextDate" />
 
-    <EditText
-        android:id="@+id/locationEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationtextViewLabel"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/remarksTextViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/remarks"
+            app:layout_constraintEnd_toEndOf="@+id/maxDepthEditTextNumberDecimal"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/maxDepthEditTextNumberDecimal"
+            app:layout_constraintTop_toBottomOf="@+id/maxDepthEditTextNumberDecimal" />
 
-    <EditText
-        android:id="@+id/spotEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spotTextViewLabel"
-        app:layout_constraintVertical_bias="0.0" />
+        <EditText
+            android:id="@+id/locationEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/locationtextViewLabel"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/locationtextViewLabel"
+            app:layout_constraintTop_toBottomOf="@+id/locationtextViewLabel" />
 
-    <EditText
-        android:id="@+id/diveDateEditTextDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diveDatetextViewLabel"
-        app:layout_constraintVertical_bias="0.0" />
+        <EditText
+            android:id="@+id/spotEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/spotTextViewLabel"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/spotTextViewLabel"
+            app:layout_constraintTop_toBottomOf="@+id/spotTextViewLabel" />
 
-    <EditText
-        android:id="@+id/minutesEditTextNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/minutesTextViewLabel"
-        app:layout_constraintVertical_bias="0.0" />
+        <EditText
+            android:id="@+id/diveDateEditTextDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="date"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/diveDatetextViewLabel"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/diveDatetextViewLabel"
+            app:layout_constraintTop_toBottomOf="@+id/diveDatetextViewLabel" />
 
-    <EditText
-        android:id="@+id/maxDepthEditTextNumberDecimal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="numberDecimal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maxDepthTextViewLabel"
-        app:layout_constraintVertical_bias="0.0" />
+        <EditText
+            android:id="@+id/minutesEditTextNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="number"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/minutesTextViewLabel"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/minutesTextViewLabel"
+            app:layout_constraintTop_toBottomOf="@+id/minutesTextViewLabel" />
 
-    <EditText
-        android:id="@+id/remarksEditTextTextMultiLine"
-        android:layout_width="379dp"
-        android:layout_height="123dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/remarksTextViewLabel"
-        app:layout_constraintVertical_bias="0.0" />
+        <EditText
+            android:id="@+id/maxDepthEditTextNumberDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/maxDepthTextViewLabel"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/maxDepthTextViewLabel"
+            app:layout_constraintTop_toBottomOf="@+id/maxDepthTextViewLabel" />
 
-    <ImageButton
-        android:id="@+id/saveImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:onClick="save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/remarksEditTextTextMultiLine"
-        app:layout_constraintVertical_bias="0.125"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        <EditText
+            android:id="@+id/remarksEditTextTextMultiLine"
+            android:layout_width="374dp"
+            android:layout_height="125dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/remarksTextViewLabel"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/remarksTextViewLabel"
+            app:layout_constraintTop_toBottomOf="@+id/remarksTextViewLabel" />
 
-    <ImageButton
-        android:id="@+id/cancelImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:onClick="cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/saveImageButton"
-        app:layout_constraintTop_toBottomOf="@+id/remarksEditTextTextMultiLine"
-        app:layout_constraintVertical_bias="0.1"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/remarksEditTextTextMultiLine"
+            app:layout_constraintStart_toStartOf="@+id/remarksEditTextTextMultiLine"
+            app:layout_constraintTop_toBottomOf="@+id/remarksEditTextTextMultiLine"
+            app:layout_constraintVertical_bias="0.0" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/canceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/remarksEditTextTextMultiLine"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/saveButton"
+            app:layout_constraintTop_toBottomOf="@+id/remarksEditTextTextMultiLine"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
