@@ -1,5 +1,6 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.entity;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,7 +11,10 @@ import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 /**
  * Clase que implementa una inmersión
  */
-public class Dive {
+public class Dive implements Serializable {
+
+    private static final long serialVersionUID = 8799656478674716638L;
+
     private int diveId;
     private String location;
     private String spot;

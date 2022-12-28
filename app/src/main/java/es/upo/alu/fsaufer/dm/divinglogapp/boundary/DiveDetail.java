@@ -1,11 +1,12 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
+import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 
 /**
@@ -18,17 +19,19 @@ public class DiveDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dive_detail);
 
+        Dive dive = (Dive) getIntent().getSerializableExtra(Constant.DIVE);
+
         TextView textView = (TextView) findViewById(R.id.locationTextViewContent);
-        textView.setText(getIntent().getStringExtra(Constant.LOCATION));
+        textView.setText(dive.getLocation());
         textView = (TextView) findViewById(R.id.spotTextViewContent);
-        textView.setText(getIntent().getStringExtra(Constant.SPOT));
+        textView.setText(dive.getSpot());
         textView = (TextView) findViewById(R.id.diveDateTextViewContent);
-        textView.setText(getIntent().getStringExtra(Constant.DIVE_DATE));
+        textView.setText(dive.getFormatedDiveDate());
         textView = (TextView) findViewById(R.id.minutesTextViewContent);
-        textView.setText(Integer.toString(getIntent().getIntExtra(Constant.MINUTES, 0)));
+        textView.setText(Integer.toString(dive.getMinutes()));
         textView = (TextView) findViewById(R.id.maxDepthTextViewContent);
-        textView.setText(Float.toString(getIntent().getFloatExtra(Constant.MAX_DEPTH, 0)));
+        textView.setText(Float.toString(dive.getMaxDepth()));
         textView = (TextView) findViewById(R.id.remarksTextViewContent);
-        textView.setText(getIntent().getStringExtra(Constant.REMARKS));
+        textView.setText(dive.getRemarks());
     }
 }

@@ -11,11 +11,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;
+import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 
 /**
  * Actividad principal
  */
 public class MainActivity extends AppCompatActivity {
+
+    private ListFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        ListFragment fragment = new ListFragment();
+        fragment = new ListFragment();
         transaction.replace(R.id.sample_content_fragment, fragment);
         transaction.commit();
 
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent intent = new Intent(this, EditDive.class);
+        intent.putExtra(Constant.ADAPTER, fragment.getAdapter());
         startActivity(intent);
 
         return super.onOptionsItemSelected(item);

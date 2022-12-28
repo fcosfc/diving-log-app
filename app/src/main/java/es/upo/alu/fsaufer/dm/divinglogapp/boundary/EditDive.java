@@ -22,12 +22,16 @@ import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
  */
 public class EditDive extends AppCompatActivity {
 
+    private DiveListAdapter adapter;
+
     private EditText location, spot, diveDate, minutes, maxDepth, remarks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_dive);
+
+        adapter = (DiveListAdapter) getIntent().getSerializableExtra(Constant.ADAPTER);
 
         location = findViewById(R.id.locationEditText);
         spot = findViewById(R.id.spotEditText);
@@ -109,6 +113,8 @@ public class EditDive extends AppCompatActivity {
 
         if (!formHasErrors) {
             DiveRepository.save(dive);
+
+            adapter.notifyItemInserted(0);
 
             finish();
         }

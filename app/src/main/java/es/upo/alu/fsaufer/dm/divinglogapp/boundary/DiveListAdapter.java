@@ -9,21 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.io.Serializable;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;
-import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 
 /**
  * Clase adaptador para mostrar los elementos de la lista de inmersiones
  */
-public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHolder> {
+public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHolder> implements Serializable {
+
+    private static final long serialVersionUID = 8799654478675716638L;
 
     private final DiveClickListener diveClickListener;
-
-    private final List<Dive> diveList;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView placeTextView;
@@ -56,7 +55,6 @@ public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHo
 
     public DiveListAdapter(DiveClickListener diveClickListener) {
         this.diveClickListener = diveClickListener;
-        diveList = DiveRepository.getDiveList();
     }
 
     @NonNull
@@ -70,8 +68,8 @@ public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull DiveListAdapter.ViewHolder holder, int position) {
-        holder.getPlaceTextView().setText(diveList.get(position).getPlace());
-        holder.getDateTextView().setText(diveList.get(position).getFormatedDiveDate());
+        holder.getPlaceTextView().setText(DiveRepository.getDiveList().get(position).getPlace());
+        holder.getDateTextView().setText(DiveRepository.getDiveList().get(position).getFormatedDiveDate());
 
         if(position %2 == 0) {
             holder.itemView.setBackgroundColor(Color.parseColor(Constant.PAR_ROWS_COLOR));
@@ -82,7 +80,7 @@ public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return diveList.size();
+        return DiveRepository.getDiveList().size();
     }
 
 }
