@@ -1,5 +1,6 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
@@ -46,6 +48,8 @@ public class EditDiveActivity extends AppCompatActivity {
 
         Button cancelButton = findViewById(R.id.canceButton);
         cancelButton.setOnClickListener(v -> cancel(v));
+
+        diveDate.setOnClickListener(v -> showDatePicker());
     }
 
     @Override
@@ -132,5 +136,24 @@ public class EditDiveActivity extends AppCompatActivity {
 
     public void cancel(View view) {
         finish();
+    }
+
+    private void showDatePicker() {
+        final Calendar c = Calendar.getInstance();
+
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (view, selectedYear, selectedMonth, selectedDayOfMonth) ->
+                        diveDate.setText(
+                                DateUtil.formatDate(
+                                        DateUtil.parseDate(
+                                                String.format("%d-%d-%d", selectedYear, ++selectedMonth, selectedDayOfMonth)))),
+                year, month, dayOfMonth);
+
+        datePickerDialog.show();
     }
 }
