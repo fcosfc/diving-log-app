@@ -15,7 +15,7 @@ La aplicación evolucionará desde los requisitos establecidos en la asignatura 
 
 ## Ejercicio evaluable 
 
-* Etiqueta: TO DO
+* Etiqueta: v1.0
 * Funcionamiento: al entrar en la APP se carga una lista de inmersiones de ejemplo, si se pulsa sobre una de ellas se puede ver el detalle. También se pueden guardar nuevas inmersiones mediante el menú de la APP. 
 * Matriz de cumplimiento de requisitos:
 
