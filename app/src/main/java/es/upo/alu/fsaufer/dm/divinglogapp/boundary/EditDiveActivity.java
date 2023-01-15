@@ -30,6 +30,8 @@ public class EditDiveActivity extends AppCompatActivity {
 
     private EditText location, spot, diveDate, minutes, maxDepth, remarks;
 
+    private Dive dive = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,18 @@ public class EditDiveActivity extends AppCompatActivity {
         minutes = findViewById(R.id.minutesEditTextNumber);
         maxDepth = findViewById(R.id.maxDepthEditTextNumberDecimal);
         remarks = findViewById(R.id.remarksEditTextTextMultiLine);
+
+        if (getIntent().getSerializableExtra(Constant.DIVE) == null) {
+            dive = new Dive();
+        } else {
+            dive = (Dive) getIntent().getSerializableExtra(Constant.DIVE);
+            location.setText(dive.getLocation());
+            spot.setText(dive.getSpot());
+            diveDate.setText(dive.getFormatedDiveDate());
+            minutes.setText(Integer.toString(dive.getMinutes()));
+            maxDepth.setText(Float.toString(dive.getMaxDepth()));
+            remarks.setText(dive.getRemarks());
+        }
 
         Button saveButton = findViewById(R.id.saveButton);
         saveButton.setOnClickListener(v -> save(v));
@@ -60,7 +74,6 @@ public class EditDiveActivity extends AppCompatActivity {
     }
 
     public void save(View view) {
-        Dive dive = new Dive();
         String value;
         boolean formHasErrors = false;
 

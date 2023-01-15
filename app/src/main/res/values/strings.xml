@@ -10,6 +10,11 @@
     <string name="save">Guardar</string>
     <string name="cancel">Cancelar</string>
     <string name="new_dive">Nueva inmersión</string>
+    <string name="view_dive">Ver inmersión</string>
+    <string name="edit_dive">Editar inmersión</string>
+    <string name="delete_dive">Borrar inmersión</string>
+    <string name="delete_dive_confirmation">¿Borrar inmersión?</string>
+    <string name="delete_dive_confirmation_message">¿Está seguro de querer eliminar la inmersión del registro?</string>
     <string name="not_null">Este campo no puede ser nulo</string>
     <string name="date_not_valid">No es un fecha válida (yyyy-mm-dd)</string>
     <string name="saved">Registro guardado</string>

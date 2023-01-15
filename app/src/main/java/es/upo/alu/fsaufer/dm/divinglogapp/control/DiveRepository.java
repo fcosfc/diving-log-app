@@ -30,6 +30,12 @@ public class DiveRepository {
         refreshDiveList();
     }
 
+    public static void delete(Dive dive) {
+        diveDbHelper.delete(dive.getDiveId());
+
+        refreshDiveList();
+    }
+
     public static void refreshDiveList() {
         diveList = diveDbHelper.readAllData();
     }

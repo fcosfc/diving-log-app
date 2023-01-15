@@ -109,12 +109,18 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void delete(int diveId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_NAME, Constant.DIVE_ID + "=?", new String[]{Integer.toString(diveId)});
+    }
+
     private void insertDive(SQLiteDatabase db, ContentValues values) {
         db.insert(TABLE_NAME, null, values);
     }
 
     private void updateDive(SQLiteDatabase db, ContentValues values, int diveId) {
-        db.update(TABLE_NAME, values, Constant.DIVE_ID + "=", new String[]{Integer.toString(diveId)});
+        db.update(TABLE_NAME, values, Constant.DIVE_ID + "=?", new String[]{Integer.toString(diveId)});
     }
 
     private ContentValues getContentValues(Dive dive) {
