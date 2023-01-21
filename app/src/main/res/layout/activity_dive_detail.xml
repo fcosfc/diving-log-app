@@ -7,6 +7,43 @@
     tools:context=".boundary.DiveDetailActivity">
 
     <TextView
+        android:id="@+id/nitroxUseTextViewContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/without_nitrox_use"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/weatherConditionsTextViewContent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/weatherConditionsTextViewContent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherConditionsTextViewContent" />
+
+    <TextView
+        android:id="@+id/weatherConditionsTextViewContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/weather_conditions"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/weatherConditionsTextViewLabel"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/weatherConditionsTextViewLabel"
+        app:layout_constraintTop_toBottomOf="@+id/weatherConditionsTextViewLabel" />
+
+    <TextView
+        android:id="@+id/weatherConditionsTextViewLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/weather_conditions"
+        app:layout_constraintEnd_toEndOf="@+id/maxDepthTextViewContent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/maxDepthTextViewContent"
+        app:layout_constraintTop_toBottomOf="@+id/maxDepthTextViewContent" />
+
+    <TextView
         android:id="@+id/locationtextViewLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +115,7 @@
         app:layout_constraintTop_toBottomOf="@+id/diveDatetextViewLabel" />
 
     <TextView
-        android:id="@+id/maxDepthTextViewLabel"
+        android:id="@+id/minutesTextViewLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -96,13 +133,13 @@
         android:text="@string/minutes"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/maxDepthTextViewLabel"
+        app:layout_constraintEnd_toEndOf="@+id/minutesTextViewLabel"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/maxDepthTextViewLabel"
-        app:layout_constraintTop_toBottomOf="@+id/maxDepthTextViewLabel" />
+        app:layout_constraintStart_toStartOf="@+id/minutesTextViewLabel"
+        app:layout_constraintTop_toBottomOf="@+id/minutesTextViewLabel" />
 
     <TextView
-        android:id="@+id/minutesTextViewLabel"
+        android:id="@+id/maxDepthTextViewLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -120,10 +157,10 @@
         android:text="@string/max_depth"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/minutesTextViewLabel"
+        app:layout_constraintEnd_toEndOf="@+id/maxDepthTextViewLabel"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/minutesTextViewLabel"
-        app:layout_constraintTop_toBottomOf="@+id/minutesTextViewLabel" />
+        app:layout_constraintStart_toStartOf="@+id/maxDepthTextViewLabel"
+        app:layout_constraintTop_toBottomOf="@+id/maxDepthTextViewLabel" />
 
     <TextView
         android:id="@+id/remarksTextViewLabel"
@@ -131,16 +168,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/remarks"
-        app:layout_constraintEnd_toEndOf="@+id/maxDepthTextViewContent"
+        app:layout_constraintEnd_toEndOf="@+id/nitroxUseTextViewContent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/maxDepthTextViewContent"
-        app:layout_constraintTop_toBottomOf="@+id/maxDepthTextViewContent" />
+        app:layout_constraintStart_toStartOf="@+id/nitroxUseTextViewContent"
+        app:layout_constraintTop_toBottomOf="@+id/nitroxUseTextViewContent" />
 
     <TextView
         android:id="@+id/remarksTextViewContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="@string/remarks"
         android:textColor="@color/black"
         android:textSize="20sp"

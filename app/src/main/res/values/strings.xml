@@ -6,6 +6,12 @@
     <string name="dive_date">Fecha</string>
     <string name="minutes">Minutos</string>
     <string name="max_depth">Profundidad máxima</string>
+    <string name="weather_conditions">Condiciones meteo</string>
+    <string name="good">Buenas</string>
+    <string name="tolerable">Regulares</string>
+    <string name="bad">Malas</string>
+    <string name="nitrox_use">Inmersión con nitrox</string>
+    <string name="without_nitrox_use">Inmersión con aire</string>
     <string name="remarks">Comentarios</string>
     <string name="save">Guardar</string>
     <string name="cancel">Cancelar</string>

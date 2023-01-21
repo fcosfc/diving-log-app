@@ -16,22 +16,27 @@ public class Dive implements Serializable {
     private static final long serialVersionUID = 8799656478674716638L;
 
     private int diveId;
-    private String location;
+    private Location location;
     private String spot;
     private Date diveDate;
     private int minutes;
     private float maxDepth;
+    private WeatherConditions weatherConditions;
+    private boolean nitroxUse;
     private String remarks;
 
     public Dive() {
     }
 
-    public Dive(String location, String spot, Date diveDate, int minutes, float maxDepth, String remarks) {
+    public Dive(Location location, String spot, Date diveDate, int minutes, float maxDepth,
+                WeatherConditions weatherConditions, boolean nitroxUse, String remarks) {
         this.location = location;
         this.spot = spot;
         this.diveDate = diveDate;
         this.minutes = minutes;
         this.maxDepth = maxDepth;
+        this.weatherConditions = weatherConditions;
+        this.nitroxUse = nitroxUse;
         this.remarks = remarks;
     }
 
@@ -43,11 +48,11 @@ public class Dive implements Serializable {
         return diveId;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
@@ -60,7 +65,7 @@ public class Dive implements Serializable {
     }
 
     public String getPlace() {
-        return location + " - " + spot;
+        return location.getName() + " - " + spot;
     }
 
     public Date getDiveDate() {
@@ -93,6 +98,22 @@ public class Dive implements Serializable {
         this.maxDepth = maxDepth;
     }
 
+    public WeatherConditions getWeatherConditions() {
+        return weatherConditions;
+    }
+
+    public void setWeatherConditions(WeatherConditions weatherConditions) {
+        this.weatherConditions = weatherConditions;
+    }
+
+    public boolean isNitroxUse() {
+        return nitroxUse;
+    }
+
+    public void setNitroxUse(boolean nitroxUse) {
+        this.nitroxUse = nitroxUse;
+    }
+
     public String getRemarks() {
         return remarks;
     }
@@ -118,11 +139,13 @@ public class Dive implements Serializable {
     public String toString() {
         return "Dive{" +
                 "diveId=" + diveId +
-                ", location='" + location + '\'' +
+                ", location=" + location +
                 ", spot='" + spot + '\'' +
                 ", diveDate=" + diveDate +
                 ", minutes=" + minutes +
                 ", maxDepth=" + maxDepth +
+                ", weatherConditions=" + weatherConditions +
+                ", nitroxUse=" + nitroxUse +
                 ", remarks='" + remarks + '\'' +
                 '}';
     }

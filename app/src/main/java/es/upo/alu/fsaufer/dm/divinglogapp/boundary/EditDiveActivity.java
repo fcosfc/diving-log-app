@@ -3,8 +3,12 @@ package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +18,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
+import es.upo.alu.fsaufer.dm.divinglogapp.entity.WeatherConditions;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
 
@@ -28,7 +34,10 @@ public class EditDiveActivity extends AppCompatActivity {
 
     private int formResult = RESULT_CANCELED;
 
-    private EditText location, spot, diveDate, minutes, maxDepth, remarks;
+    private Spinner location;
+    private EditText spot, diveDate, minutes, maxDepth, remarks;
+    private RadioButton goodWeatherConditions, tolerableWeatherConditions, badWeatherConditions;
+    private CheckBox nitroxUse;
 
     private Dive dive = null;
 
@@ -37,23 +46,44 @@ public class EditDiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_dive);
 
-        location = findViewById(R.id.locationEditText);
+        List<String> locationList = DiveRepository.getLocationList();
+        location = findViewById(R.id.locationSpinner);
+        ArrayAdapter<String> locationAdapter =
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locationList);
+        location.setAdapter(locationAdapter);
+
         spot = findViewById(R.id.spotEditText);
         diveDate = findViewById(R.id.diveDateEditTextDate);
         diveDate.setText(DateUtil.formatDate(new Date()));
         minutes = findViewById(R.id.minutesEditTextNumber);
         maxDepth = findViewById(R.id.maxDepthEditTextNumberDecimal);
+        goodWeatherConditions = findViewById(R.id.goodWeatherRadioButton);
+        tolerableWeatherConditions = findViewById(R.id.tolerableWeatherRadioButton);
+        badWeatherConditions = findViewById(R.id.badWeatherRadioButton);
+        nitroxUse = findViewById(R.id.nitroxUseCheckBox);
         remarks = findViewById(R.id.remarksEditTextTextMultiLine);
 
         if (getIntent().getSerializableExtra(Constant.DIVE) == null) {
             dive = new Dive();
         } else {
             dive = (Dive) getIntent().getSerializableExtra(Constant.DIVE);
-            location.setText(dive.getLocation());
+            location.setSelection(locationList.indexOf(dive.getLocation().getName()));
             spot.setText(dive.getSpot());
             diveDate.setText(dive.getFormatedDiveDate());
             minutes.setText(Integer.toString(dive.getMinutes()));
             maxDepth.setText(Float.toString(dive.getMaxDepth()));
+            switch (dive.getWeatherConditions()) {
+                case GOOD:
+                    goodWeatherConditions.setChecked(true);
+                    break;
+                case TOLERABLE:
+                    tolerableWeatherConditions.setChecked(true);
+                    break;
+                case BAD:
+                    badWeatherConditions.setChecked(true);
+                    break;
+            }
+            nitroxUse.setChecked(dive.isNitroxUse());
             remarks.setText(dive.getRemarks());
         }
 
@@ -74,20 +104,14 @@ public class EditDiveActivity extends AppCompatActivity {
     }
 
     public void save(View view) {
-        String value;
+        String textValue;
         boolean formHasErrors = false;
 
-        value = location.getText().toString().trim();
-        if (value.isEmpty()) {
-            location.setError(getString(R.string.not_null));
-            location.setFocusable(true);
-            formHasErrors = true;
-        } else {
-            dive.setLocation(value);
-        }
+        textValue = (String) location.getSelectedItem();
+        dive.setLocation(DiveRepository.getLocation(textValue));
 
-        value = spot.getText().toString().trim();
-        if (value.isEmpty()) {
+        textValue = spot.getText().toString().trim();
+        if (textValue.isEmpty()) {
             spot.setError(getString(R.string.not_null));
             spot.setFocusable(true);
             formHasErrors = true;
@@ -95,8 +119,8 @@ public class EditDiveActivity extends AppCompatActivity {
             dive.setSpot(spot.getText().toString().trim());
         }
 
-        value = diveDate.getText().toString().trim();
-        if (value.isEmpty()) {
+        textValue = diveDate.getText().toString().trim();
+        if (textValue.isEmpty()) {
             diveDate.setError(getString(R.string.not_null));
             diveDate.setFocusable(true);
             formHasErrors = true;
@@ -106,7 +130,7 @@ public class EditDiveActivity extends AppCompatActivity {
             Date date;
 
             try {
-                date = dateFormat.parse(value);
+                date = dateFormat.parse(textValue);
 
                 dive.setDiveDate(date);
             } catch (ParseException e) {
@@ -116,23 +140,33 @@ public class EditDiveActivity extends AppCompatActivity {
             }
         }
 
-        value = minutes.getText().toString().trim();
-        if (value.isEmpty()) {
+        textValue = minutes.getText().toString().trim();
+        if (textValue.isEmpty()) {
             minutes.setError(getString(R.string.not_null));
             minutes.setFocusable(true);
             formHasErrors = true;
         } else {
-            dive.setMinutes(Integer.parseInt(value));
+            dive.setMinutes(Integer.parseInt(textValue));
         }
 
-        value = maxDepth.getText().toString().trim();
-        if (value.isEmpty()) {
+        textValue = maxDepth.getText().toString().trim();
+        if (textValue.isEmpty()) {
             maxDepth.setError(getString(R.string.not_null));
             maxDepth.setFocusable(true);
             formHasErrors = true;
         } else {
-            dive.setMaxDepth(Float.parseFloat(value));
+            dive.setMaxDepth(Float.parseFloat(textValue));
         }
+
+        if (goodWeatherConditions.isChecked()) {
+            dive.setWeatherConditions(WeatherConditions.GOOD);
+        } else if (tolerableWeatherConditions.isChecked()) {
+            dive.setWeatherConditions(WeatherConditions.TOLERABLE);
+        } else if (badWeatherConditions.isChecked()) {
+            dive.setWeatherConditions(WeatherConditions.BAD);
+        }
+
+        dive.setNitroxUse(nitroxUse.isChecked());
 
         dive.setRemarks(remarks.getText().toString().trim());
 
