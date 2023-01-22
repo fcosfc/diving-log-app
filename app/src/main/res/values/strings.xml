@@ -28,4 +28,8 @@
     <string name="notification_channel_description">Canal de notificaciones para la APP Diving Log</string>
     <string name="notification_demo_data_loaded_title">Datos de ejemplo cargados</string>
     <string name="notification_demo_data_loaded_text">Datos de ejemplo cargados en base de datos SQLite. Pulse sobre cada inmersión para ver el detalle</string>
+    <string name="weather_service_error">Error en la llamada al API de datos meteo</string>
+    <string name="temperature">Temperatura</string>
+    <string name="wind_speed">Viento</string>
+    <string name="clouds">Nubes</string>
 </resources>

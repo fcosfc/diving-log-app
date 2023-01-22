@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.Serializable;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
-import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.db.DiveRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 
 /**
@@ -78,7 +78,7 @@ public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull DiveListAdapter.ViewHolder holder, int position) {
         holder.getPlaceTextView().setText(DiveRepository.getDiveList().get(position).getPlace());
-        holder.getDateTextView().setText(DiveRepository.getDiveList().get(position).getFormatedDiveDate());
+        holder.getDateTextView().setText(DiveRepository.getDiveList().get(position).getFormattedDiveDate());
 
         if (position % 2 == 0) {
             holder.itemView.setBackgroundColor(

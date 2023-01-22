@@ -26,7 +26,7 @@ public class DiveDetailActivity extends AppCompatActivity {
         textView = (TextView) findViewById(R.id.spotTextViewContent);
         textView.setText(dive.getSpot());
         textView = (TextView) findViewById(R.id.diveDateTextViewContent);
-        textView.setText(dive.getFormatedDiveDate());
+        textView.setText(dive.getFormattedDiveDate());
         textView = (TextView) findViewById(R.id.minutesTextViewContent);
         textView.setText(Integer.toString(dive.getMinutes()));
         textView = (TextView) findViewById(R.id.maxDepthTextViewContent);

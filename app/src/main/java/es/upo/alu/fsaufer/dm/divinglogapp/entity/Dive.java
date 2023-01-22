@@ -76,7 +76,7 @@ public class Dive implements Serializable {
         this.diveDate = diveDate;
     }
 
-    public String getFormatedDiveDate() {
+    public String getFormattedDiveDate() {
         DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT);
 
         return dateFormat.format(diveDate);

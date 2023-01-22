@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
-import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.db.DiveRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 

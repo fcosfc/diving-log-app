@@ -1,6 +1,8 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.entity;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -44,12 +46,20 @@ public class Location implements Serializable {
         return longitude;
     }
 
+    public String getFormattedLongitude() {
+        return NumberFormat.getNumberInstance(Locale.ENGLISH).format(longitude);
+    }
+
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 
     public float getLatitude() {
         return latitude;
+    }
+
+    public String getFormattedLatitude() {
+        return NumberFormat.getNumberInstance(Locale.ENGLISH).format(latitude);
     }
 
     public void setLatitude(float latitude) {

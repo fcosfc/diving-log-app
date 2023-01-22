@@ -2,7 +2,9 @@ package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,11 +23,17 @@ import java.util.Date;
 import java.util.List;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
-import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveRepository;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.db.DiveRepository;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.rest.WeatherService;
+import es.upo.alu.fsaufer.dm.divinglogapp.dto.WeatherServiceResponse;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
+import es.upo.alu.fsaufer.dm.divinglogapp.entity.Location;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.WeatherConditions;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Actividad para guardar nuevas inmersiones o editar existentes
@@ -41,6 +49,8 @@ public class EditDiveActivity extends AppCompatActivity {
 
     private Dive dive = null;
 
+    private boolean isEdition = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +61,18 @@ public class EditDiveActivity extends AppCompatActivity {
         ArrayAdapter<String> locationAdapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locationList);
         location.setAdapter(locationAdapter);
+        location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!isEdition) {
+                    readCurrentWeatherConditions(DiveRepository.getLocation(locationList.get(position)));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         spot = findViewById(R.id.spotEditText);
         diveDate = findViewById(R.id.diveDateEditTextDate);
@@ -66,10 +88,11 @@ public class EditDiveActivity extends AppCompatActivity {
         if (getIntent().getSerializableExtra(Constant.DIVE) == null) {
             dive = new Dive();
         } else {
+            isEdition = true;
             dive = (Dive) getIntent().getSerializableExtra(Constant.DIVE);
             location.setSelection(locationList.indexOf(dive.getLocation().getName()));
             spot.setText(dive.getSpot());
-            diveDate.setText(dive.getFormatedDiveDate());
+            diveDate.setText(dive.getFormattedDiveDate());
             minutes.setText(Integer.toString(dive.getMinutes()));
             maxDepth.setText(Float.toString(dive.getMaxDepth()));
             switch (dive.getWeatherConditions()) {
@@ -88,10 +111,10 @@ public class EditDiveActivity extends AppCompatActivity {
         }
 
         Button saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(v -> save(v));
+        saveButton.setOnClickListener(this::save);
 
         Button cancelButton = findViewById(R.id.canceButton);
-        cancelButton.setOnClickListener(v -> cancel(v));
+        cancelButton.setOnClickListener(this::cancel);
 
         diveDate.setOnClickListener(v -> showDatePicker());
     }
@@ -202,5 +225,89 @@ public class EditDiveActivity extends AppCompatActivity {
                 year, month, dayOfMonth);
 
         datePickerDialog.show();
+    }
+
+    private void readCurrentWeatherConditions(Location location) {
+        Call<WeatherServiceResponse> weatherServiceCall =
+                WeatherService.getApi(this).getCurrentWeather(Constant.WEATHER_SERVICE_API_KEY,
+                        Constant.WEATHER_SERVICE_UNITS,
+                        location.getFormattedLongitude(),
+                        location.getFormattedLatitude());
+
+        weatherServiceCall.enqueue(new Callback<WeatherServiceResponse>() {
+            @Override
+            public void onResponse(Call<WeatherServiceResponse> call, Response<WeatherServiceResponse> response) {
+                WeatherServiceResponse weatherServiceResponse = response.body();
+
+                Log.i("WeatherService", weatherServiceResponse.toString());
+
+                setWeatherConditions(inferWeatherConditions(weatherServiceResponse));
+
+                Toast.makeText(getApplicationContext(), getCurrentWeatherMessage(weatherServiceResponse), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<WeatherServiceResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), R.string.weather_service_error, Toast.LENGTH_LONG).show();
+
+                Log.e("WeatherService", call.toString(), t);
+            }
+
+            private String getCurrentWeatherMessage(WeatherServiceResponse weatherServiceResponse) {
+                StringBuilder builder = new StringBuilder();
+
+                builder.append(getString(R.string.temperature)).append(": ").append(weatherServiceResponse.getMain().getTemperature()).append("º, ");
+                builder.append(getString(R.string.wind_speed)).append(": ").append(weatherServiceResponse.getWind().getSpeed()).append("Km/h, ");
+                builder.append(getString(R.string.clouds)).append(": ").append(weatherServiceResponse.getClouds().getPercentaje()).append("%");
+
+                return builder.toString();
+            }
+        });
+    }
+
+    private WeatherConditions inferWeatherConditions(WeatherServiceResponse weatherServiceResponse) {
+        int globalWeather = 0;
+
+        if (weatherServiceResponse.getMain().getTemperature() > 20 &&
+                weatherServiceResponse.getMain().getTemperature() > 30) {
+            globalWeather = 30;
+        } else if (weatherServiceResponse.getMain().getTemperature() > 15 &&
+                weatherServiceResponse.getMain().getTemperature() <= 20) {
+            globalWeather = 15;
+        }
+
+        if (weatherServiceResponse.getWind().getSpeed() < 10) {
+            globalWeather += 50;
+        } else if (weatherServiceResponse.getWind().getSpeed() < 20) {
+            globalWeather += 25;
+        }
+
+        if (weatherServiceResponse.getClouds().getPercentaje() < 25) {
+            globalWeather += 20;
+        } else if (weatherServiceResponse.getClouds().getPercentaje() < 50) {
+            globalWeather += 10;
+        }
+
+        if (globalWeather >= 70) {
+            return WeatherConditions.GOOD;
+        } else if (globalWeather >= 40) {
+            return WeatherConditions.TOLERABLE;
+        } else {
+            return WeatherConditions.BAD;
+        }
+    }
+
+    private void setWeatherConditions(WeatherConditions weatherConditions) {
+        switch (weatherConditions) {
+            case GOOD:
+                goodWeatherConditions.setChecked(true);
+                break;
+            case TOLERABLE:
+                tolerableWeatherConditions.setChecked(true);
+                break;
+            case BAD:
+                badWeatherConditions.setChecked(true);
+                break;
+        }
     }
 }

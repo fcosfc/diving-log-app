@@ -22,4 +22,7 @@ public class Constant {
 
     public static final String ODD_ROWS_COLOR = "#F0F0F3";
     public static final String PAR_ROWS_COLOR = "#FCFCFF";
+
+    public static final String WEATHER_SERVICE_API_KEY = "cc9597770cd761631eb615466a1d6867";
+    public static final String WEATHER_SERVICE_UNITS = "metric";
 }

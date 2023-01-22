@@ -1,4 +1,4 @@
-package es.upo.alu.fsaufer.dm.divinglogapp.control;
+package es.upo.alu.fsaufer.dm.divinglogapp.control.db;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -182,7 +182,7 @@ public class DiveDbHelper extends SQLiteOpenHelper {
 
         values.put(Constant.LOCATION_ID, dive.getLocation().getLocationId());
         values.put(Constant.SPOT, dive.getSpot());
-        values.put(Constant.DIVE_DATE, dive.getFormatedDiveDate());
+        values.put(Constant.DIVE_DATE, dive.getFormattedDiveDate());
         values.put(Constant.MINUTES, dive.getMinutes());
         values.put(Constant.MAX_DEPTH, dive.getMaxDepth());
         values.put(Constant.WEATHER_CONDITIONS, dive.getWeatherConditions().toString());
@@ -242,11 +242,11 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         List<Location> demoLocationList = new ArrayList<>();
         Location location;
 
-        location = new Location("Algeciras", 36.1310078f, -5.4928738f);
+        location = new Location("Algeciras", -5.4928738f, 36.1310078f);
         demoLocationList.add(location);
-        location = new Location("Ceuta", 35.8890551f, -5.3360354f);
+        location = new Location("Ceuta", -5.3360354f, 35.8890551f);
         demoLocationList.add(location);
-        location = new Location("Tarifa", 36.0144551f, -5.6090361f);
+        location = new Location("Tarifa", -5.6090361f, 36.0144551f);
         demoLocationList.add(location);
 
         return demoLocationList;
