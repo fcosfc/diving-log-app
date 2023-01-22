@@ -1,7 +1,5 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.control.rest;
 
-import android.content.Context;
-
 import java.util.concurrent.TimeUnit;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.dto.WeatherServiceResponse;
@@ -32,24 +30,24 @@ public class WeatherService {
 
     }
 
-    public static ApiInterface getApi(Context context) {
+    public static ApiInterface getApi() {
         if (api == null)
-            createInstance(context);
+            createInstance();
 
         return api;
     }
 
-    private static void createInstance(Context context) {
+    private static void createInstance() {
         if (api == null) {
             synchronized (WeatherService.class) {
                 if (api == null) {
-                    api = buildApiClient(context);
+                    api = buildApiClient();
                 }
             }
         }
     }
 
-    private static ApiInterface buildApiClient(Context context) {
+    private static ApiInterface buildApiClient() {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(TIMEOUT, TimeUnit.SECONDS)

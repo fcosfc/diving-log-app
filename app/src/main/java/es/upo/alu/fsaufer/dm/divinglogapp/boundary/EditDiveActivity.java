@@ -236,7 +236,7 @@ public class EditDiveActivity extends AppCompatActivity {
 
     private void readCurrentWeatherConditions(DiveLocation diveLocation) {
         Call<WeatherServiceResponse> weatherServiceCall =
-                WeatherService.getApi(this).getCurrentWeather(Constant.WEATHER_SERVICE_API_KEY,
+                WeatherService.getApi().getCurrentWeather(Constant.WEATHER_SERVICE_API_KEY,
                         Constant.WEATHER_SERVICE_UNITS,
                         diveLocation.getLocation().getFormattedLongitude(),
                         diveLocation.getLocation().getFormattedLatitude());
