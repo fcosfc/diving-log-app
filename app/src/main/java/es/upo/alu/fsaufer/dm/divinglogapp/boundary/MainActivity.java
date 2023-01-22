@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
-import es.upo.alu.fsaufer.dm.divinglogapp.control.db.DiveRepository;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.db.AppRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
         adapter = new DiveListAdapter(this);
         recyclerView.setAdapter(adapter);
 
-        DiveRepository.init(this);
+        AppRepository.init(this);
 
         editDiveLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
 
     @Override
     public void onClick(View view, int position) {
-        selectedDive = DiveRepository.getDiveList().get(position);
+        selectedDive = AppRepository.getDiveList().get(position);
 
         this.startActionMode(actionModeCallback);
     }
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
             alert.setMessage(R.string.delete_dive_confirmation_message);
             alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    DiveRepository.delete(dive);
+                    AppRepository.delete(dive);
 
                     adapter.notifyDataSetChanged();
                 }

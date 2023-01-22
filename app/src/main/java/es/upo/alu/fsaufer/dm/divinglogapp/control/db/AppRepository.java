@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
-import es.upo.alu.fsaufer.dm.divinglogapp.entity.Location;
+import es.upo.alu.fsaufer.dm.divinglogapp.entity.DiveLocation;
 
 /**
- * Clase repositorio de la APP
+ * Repositorio de la APP
  */
-public class DiveRepository {
-    private static Map<Integer, Location> locationMapById;
-    private static Map<String, Location> locationMapByName;
+public class AppRepository {
+    private static Map<Integer, DiveLocation> locationMapById;
+    private static Map<String, DiveLocation> locationMapByName;
 
     private static List<String> locationList;
 
@@ -32,8 +32,12 @@ public class DiveRepository {
 
     public static List<String> getLocationList() { return locationList; }
 
-    public static Location getLocation(String name) {
+    public static DiveLocation getLocation(String name) {
         return locationMapByName.get(name);
+    }
+
+    public static Map<String, DiveLocation> getLocationMap() {
+        return locationMapByName;
     }
 
     public static void refreshLocationList() {
@@ -62,21 +66,21 @@ public class DiveRepository {
         diveList = diveDbHelper.readAllDives(locationMapById);
     }
 
-    private static List<String> getLocationListFromMap(Map<Integer, Location> input) {
+    private static List<String> getLocationListFromMap(Map<Integer, DiveLocation> input) {
         List<String> output = new ArrayList<>();
 
-        for(Location location : input.values()) {
-            output.add(location.getName());
+        for(DiveLocation diveLocation : input.values()) {
+            output.add(diveLocation.getName());
         }
 
         return output;
     }
 
-    private static Map<String, Location> getLocationMapByName(Map<Integer, Location> input) {
-        Map<String, Location> output = new HashMap<>();
+    private static Map<String, DiveLocation> getLocationMapByName(Map<Integer, DiveLocation> input) {
+        Map<String, DiveLocation> output = new HashMap<>();
 
-        for(Location location : input.values()) {
-            output.put(location.getName(), location);
+        for(DiveLocation diveLocation : input.values()) {
+            output.put(diveLocation.getName(), diveLocation);
         }
 
         return output;

@@ -1,6 +1,6 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
-import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -27,11 +27,12 @@ import java.util.Date;
 import java.util.List;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
-import es.upo.alu.fsaufer.dm.divinglogapp.control.db.DiveRepository;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.db.AppRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.rest.WeatherService;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.sensor.DivingLocationService;
 import es.upo.alu.fsaufer.dm.divinglogapp.dto.WeatherServiceResponse;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
-import es.upo.alu.fsaufer.dm.divinglogapp.entity.Location;
+import es.upo.alu.fsaufer.dm.divinglogapp.entity.DiveLocation;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.WeatherConditions;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
@@ -60,17 +61,17 @@ public class EditDiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_dive);
 
-        List<String> locationList = DiveRepository.getLocationList();
+        List<String> locationList = AppRepository.getLocationList();
         location = findViewById(R.id.locationSpinner);
         ArrayAdapter<String> locationAdapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locationList);
         location.setAdapter(locationAdapter);
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET) == PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PERMISSION_GRANTED) {
             location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (!isEdition) {
-                        readCurrentWeatherConditions(DiveRepository.getLocation(locationList.get(position)));
+                        readCurrentWeatherConditions(AppRepository.getLocation(locationList.get(position)));
                     }
                 }
 
@@ -79,7 +80,7 @@ public class EditDiveActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(getApplicationContext(), R.string.internet_permission, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.internet_permission, Toast.LENGTH_LONG).show();
         }
 
         spot = findViewById(R.id.spotEditText);
@@ -95,6 +96,14 @@ public class EditDiveActivity extends AppCompatActivity {
 
         if (getIntent().getSerializableExtra(Constant.DIVE) == null) {
             dive = new Dive();
+
+            DivingLocationService.init(this);
+            if (DivingLocationService.isLocationAvailable()) {
+                String nearestLocationName = DivingLocationService.getNearestLocationName();
+                if (nearestLocationName != null) {
+                    location.setSelection(locationList.indexOf(nearestLocationName));
+                }
+            }
         } else {
             isEdition = true;
             dive = (Dive) getIntent().getSerializableExtra(Constant.DIVE);
@@ -103,17 +112,7 @@ public class EditDiveActivity extends AppCompatActivity {
             diveDate.setText(dive.getFormattedDiveDate());
             minutes.setText(Integer.toString(dive.getMinutes()));
             maxDepth.setText(Float.toString(dive.getMaxDepth()));
-            switch (dive.getWeatherConditions()) {
-                case GOOD:
-                    goodWeatherConditions.setChecked(true);
-                    break;
-                case TOLERABLE:
-                    tolerableWeatherConditions.setChecked(true);
-                    break;
-                case BAD:
-                    badWeatherConditions.setChecked(true);
-                    break;
-            }
+            setWeatherConditions(dive.getWeatherConditions());
             nitroxUse.setChecked(dive.isNitroxUse());
             remarks.setText(dive.getRemarks());
         }
@@ -139,7 +138,7 @@ public class EditDiveActivity extends AppCompatActivity {
         boolean formHasErrors = false;
 
         textValue = (String) location.getSelectedItem();
-        dive.setLocation(DiveRepository.getLocation(textValue));
+        dive.setLocation(AppRepository.getLocation(textValue));
 
         textValue = spot.getText().toString().trim();
         if (textValue.isEmpty()) {
@@ -202,7 +201,7 @@ public class EditDiveActivity extends AppCompatActivity {
         dive.setRemarks(remarks.getText().toString().trim());
 
         if (!formHasErrors) {
-            DiveRepository.save(dive);
+            AppRepository.save(dive);
 
             formResult = RESULT_OK;
 
@@ -235,12 +234,12 @@ public class EditDiveActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void readCurrentWeatherConditions(Location location) {
+    private void readCurrentWeatherConditions(DiveLocation diveLocation) {
         Call<WeatherServiceResponse> weatherServiceCall =
                 WeatherService.getApi(this).getCurrentWeather(Constant.WEATHER_SERVICE_API_KEY,
                         Constant.WEATHER_SERVICE_UNITS,
-                        location.getFormattedLongitude(),
-                        location.getFormattedLatitude());
+                        diveLocation.getLocation().getFormattedLongitude(),
+                        diveLocation.getLocation().getFormattedLatitude());
 
         weatherServiceCall.enqueue(new Callback<WeatherServiceResponse>() {
             @Override

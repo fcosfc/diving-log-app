@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 import android.os.Build;
 
 import androidx.annotation.Nullable;
@@ -21,7 +22,8 @@ import java.util.Map;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
-import es.upo.alu.fsaufer.dm.divinglogapp.entity.Location;
+import es.upo.alu.fsaufer.dm.divinglogapp.entity.DiveLocation;
+import es.upo.alu.fsaufer.dm.divinglogapp.entity.GeoLocation;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.WeatherConditions;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
@@ -64,12 +66,12 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         loadDemoData(db);
     }
 
-    public Map<Integer, Location> readAllLocations() {
+    public Map<Integer, DiveLocation> readAllLocations() {
         return readAllLocations(getDivingLogDatabase());
     }
 
-    public Map<Integer, Location> readAllLocations(SQLiteDatabase db) {
-        Map<Integer, Location> locationMap = null;
+    public Map<Integer, DiveLocation> readAllLocations(SQLiteDatabase db) {
+        Map<Integer, DiveLocation> locationMap = null;
         String[] columns = new String[]{
                 Constant.LOCATION_ID, Constant.NAME, Constant.LONGITUDE, Constant.LATITUDE
         };
@@ -78,17 +80,20 @@ public class DiveDbHelper extends SQLiteOpenHelper {
 
         if (cursor.getCount() != 0) {
             locationMap = new HashMap<>();
-            Location location;
+            DiveLocation diveLocation;
 
             while (cursor.moveToNext()) {
-                location = new Location();
+                diveLocation = new DiveLocation();
 
-                location.setLocationId(cursor.getInt(0));
-                location.setName(cursor.getString(1));
-                location.setLongitude(cursor.getFloat(2));
-                location.setLatitude(cursor.getFloat(3));
+                diveLocation.setLocationId(cursor.getInt(0));
+                diveLocation.setName(cursor.getString(1));
 
-                locationMap.put(location.getLocationId(), location);
+                Location location = new Location(Constant.LOCATION_PROVIDER);
+                diveLocation.setLocation(
+                        new GeoLocation(cursor.getFloat(2),
+                                cursor.getFloat(3)));
+
+                locationMap.put(diveLocation.getLocationId(), diveLocation);
             }
         }
 
@@ -97,7 +102,7 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         return locationMap;
     }
 
-    public List<Dive> readAllDives(Map<Integer, Location> locations) {
+    public List<Dive> readAllDives(Map<Integer, DiveLocation> locations) {
         List<Dive> diveList = null;
         String[] columns = new String[]{
                 Constant.DIVE_ID, Constant.LOCATION_ID, Constant.SPOT, Constant.DIVE_DATE,
@@ -167,12 +172,12 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         db.update(DIVES_TABLE_NAME, values, Constant.DIVE_ID + "=?", new String[]{Integer.toString(diveId)});
     }
 
-    private ContentValues getLocationContentValues(Location location) {
+    private ContentValues getLocationContentValues(DiveLocation diveLocation) {
         ContentValues values = new ContentValues();
 
-        values.put(Constant.NAME, location.getName());
-        values.put(Constant.LONGITUDE, location.getLongitude());
-        values.put(Constant.LATITUDE, location.getLatitude());
+        values.put(Constant.NAME, diveLocation.getName());
+        values.put(Constant.LONGITUDE, diveLocation.getLocation().getLongitude());
+        values.put(Constant.LATITUDE, diveLocation.getLocation().getLatitude());
 
         return values;
     }
@@ -222,37 +227,39 @@ public class DiveDbHelper extends SQLiteOpenHelper {
     }
 
     private void loadDemoData(SQLiteDatabase db) {
-        Map<Integer, Location> locationMap = loadDemoLocations(db);
+        Map<Integer, DiveLocation> locationMap = loadDemoLocations(db);
         loadDemoDives(db, locationMap);
 
         notifyDemoDataLoaded();
     }
 
-    private Map<Integer, Location> loadDemoLocations(SQLiteDatabase db) {
-        List<Location> demoLocationList = getDemoLocationList();
+    private Map<Integer, DiveLocation> loadDemoLocations(SQLiteDatabase db) {
+        List<DiveLocation> demoDiveLocationList = getDemoLocationList();
 
-        for (Location location : demoLocationList) {
-            insertLocation(db, getLocationContentValues(location));
+        for (DiveLocation diveLocation : demoDiveLocationList) {
+            insertLocation(db, getLocationContentValues(diveLocation));
         }
 
         return readAllLocations(db);
     }
 
-    List<Location> getDemoLocationList() {
-        List<Location> demoLocationList = new ArrayList<>();
-        Location location;
+    List<DiveLocation> getDemoLocationList() {
+        List<DiveLocation> demoDiveLocationList = new ArrayList<>();
+        DiveLocation diveLocation;
 
-        location = new Location("Algeciras", -5.4928738f, 36.1310078f);
-        demoLocationList.add(location);
-        location = new Location("Ceuta", -5.3360354f, 35.8890551f);
-        demoLocationList.add(location);
-        location = new Location("Tarifa", -5.6090361f, 36.0144551f);
-        demoLocationList.add(location);
+        diveLocation = new DiveLocation("Algeciras", new GeoLocation(-5.4928738, 36.1310078));
+        demoDiveLocationList.add(diveLocation);
 
-        return demoLocationList;
+        diveLocation = new DiveLocation("Ceuta", new GeoLocation(-5.3360354, 35.8890551));
+        demoDiveLocationList.add(diveLocation);
+
+        diveLocation = new DiveLocation("Tarifa", new GeoLocation(-5.6090361, 36.0144551));
+        demoDiveLocationList.add(diveLocation);
+
+        return demoDiveLocationList;
     }
 
-    private void loadDemoDives(SQLiteDatabase db, Map<Integer, Location> locationMap) {
+    private void loadDemoDives(SQLiteDatabase db, Map<Integer, DiveLocation> locationMap) {
         List<Dive> demoDiveList = getDemoDiveList(locationMap);
 
         for (Dive dive : demoDiveList) {
@@ -260,8 +267,8 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         }
     }
 
-    private List<Dive> getDemoDiveList(Map<Integer, Location> locationMap) {
-        Map<String, Location> locationMapByName = transformMapToLookForName(locationMap);
+    private List<Dive> getDemoDiveList(Map<Integer, DiveLocation> locationMap) {
+        Map<String, DiveLocation> locationMapByName = transformMapToLookForName(locationMap);
         List<Dive> demoDiveList = new ArrayList<>();
         Dive dive;
 
@@ -293,11 +300,11 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         return demoDiveList;
     }
 
-    private Map<String, Location> transformMapToLookForName(Map<Integer, Location> locationMap) {
-        Map<String, Location> newLocationMap = new HashMap<>();
+    private Map<String, DiveLocation> transformMapToLookForName(Map<Integer, DiveLocation> locationMap) {
+        Map<String, DiveLocation> newLocationMap = new HashMap<>();
 
-        for (Location location : locationMap.values()) {
-            newLocationMap.put(location.getName(), location);
+        for (DiveLocation diveLocation : locationMap.values()) {
+            newLocationMap.put(diveLocation.getName(), diveLocation);
         }
 
         return newLocationMap;

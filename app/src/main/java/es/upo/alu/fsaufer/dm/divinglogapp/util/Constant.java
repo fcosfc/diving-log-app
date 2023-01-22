@@ -25,4 +25,6 @@ public class Constant {
 
     public static final String WEATHER_SERVICE_API_KEY = "cc9597770cd761631eb615466a1d6867";
     public static final String WEATHER_SERVICE_UNITS = "metric";
+
+    public static final String LOCATION_PROVIDER = null;
 }

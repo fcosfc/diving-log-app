@@ -16,7 +16,7 @@ public class Dive implements Serializable {
     private static final long serialVersionUID = 8799656478674716638L;
 
     private int diveId;
-    private Location location;
+    private DiveLocation diveLocation;
     private String spot;
     private Date diveDate;
     private int minutes;
@@ -28,9 +28,9 @@ public class Dive implements Serializable {
     public Dive() {
     }
 
-    public Dive(Location location, String spot, Date diveDate, int minutes, float maxDepth,
+    public Dive(DiveLocation diveLocation, String spot, Date diveDate, int minutes, float maxDepth,
                 WeatherConditions weatherConditions, boolean nitroxUse, String remarks) {
-        this.location = location;
+        this.diveLocation = diveLocation;
         this.spot = spot;
         this.diveDate = diveDate;
         this.minutes = minutes;
@@ -48,12 +48,12 @@ public class Dive implements Serializable {
         return diveId;
     }
 
-    public Location getLocation() {
-        return location;
+    public DiveLocation getLocation() {
+        return diveLocation;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(DiveLocation diveLocation) {
+        this.diveLocation = diveLocation;
     }
 
     public String getSpot() {
@@ -65,7 +65,7 @@ public class Dive implements Serializable {
     }
 
     public String getPlace() {
-        return location.getName() + " - " + spot;
+        return diveLocation.getName() + " - " + spot;
     }
 
     public Date getDiveDate() {
@@ -139,7 +139,7 @@ public class Dive implements Serializable {
     public String toString() {
         return "Dive{" +
                 "diveId=" + diveId +
-                ", location=" + location +
+                ", location=" + diveLocation +
                 ", spot='" + spot + '\'' +
                 ", diveDate=" + diveDate +
                 ", minutes=" + minutes +

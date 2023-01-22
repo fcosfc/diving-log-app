@@ -2,8 +2,6 @@ package es.upo.alu.fsaufer.dm.divinglogapp.control.rest;
 
 import android.content.Context;
 
-import com.readystatesoftware.chuck.ChuckInterceptor;
-
 import java.util.concurrent.TimeUnit;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.dto.WeatherServiceResponse;
@@ -53,7 +51,6 @@ public class WeatherService {
 
     private static ApiInterface buildApiClient(Context context) {
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new ChuckInterceptor(context))
                 .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .build();
