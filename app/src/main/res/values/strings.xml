@@ -32,4 +32,5 @@
     <string name="temperature">Temperatura</string>
     <string name="wind_speed">Viento</string>
     <string name="clouds">Nubes</string>
+    <string name="internet_permission">No hay permiso para acceder a Internet. No podré obtener las condiciones meteo</string>
 </resources>

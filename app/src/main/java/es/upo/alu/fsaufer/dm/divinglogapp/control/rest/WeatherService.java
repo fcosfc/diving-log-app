@@ -17,6 +17,7 @@ import retrofit2.http.Query;
 public class WeatherService {
 
     private static final String BASE_URL = "https://api.openweathermap.org/data/2.5/";
+    private static final long TIMEOUT = 10;
 
     private WeatherService() {
     }
@@ -53,8 +54,8 @@ public class WeatherService {
     private static ApiInterface buildApiClient(Context context) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new ChuckInterceptor(context))
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(TIMEOUT, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

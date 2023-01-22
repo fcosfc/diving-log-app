@@ -1,5 +1,8 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
+import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
+
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -61,18 +65,22 @@ public class EditDiveActivity extends AppCompatActivity {
         ArrayAdapter<String> locationAdapter =
                 new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locationList);
         location.setAdapter(locationAdapter);
-        location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (!isEdition) {
-                    readCurrentWeatherConditions(DiveRepository.getLocation(locationList.get(position)));
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET) == PERMISSION_GRANTED) {
+            location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (!isEdition) {
+                        readCurrentWeatherConditions(DiveRepository.getLocation(locationList.get(position)));
+                    }
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.internet_permission, Toast.LENGTH_SHORT).show();
+        }
 
         spot = findViewById(R.id.spotEditText);
         diveDate = findViewById(R.id.diveDateEditTextDate);
