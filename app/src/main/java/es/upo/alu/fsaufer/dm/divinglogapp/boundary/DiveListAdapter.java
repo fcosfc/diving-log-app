@@ -95,7 +95,11 @@ public class DiveListAdapter extends RecyclerView.Adapter<DiveListAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return AppRepository.getDiveList().size();
+        if (AppRepository.getDiveList() == null) {
+            return 0;
+        } else {
+            return AppRepository.getDiveList().size();
+        }
     }
 
     public void clearSelectedItem() {
