@@ -1,5 +1,7 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.entity;
 
+import android.location.Location;
+
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -21,6 +23,11 @@ public class GeoLocation implements Serializable {
     public GeoLocation(double longitude, double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    public GeoLocation(Location location) {
+        this.longitude = location.getLongitude();
+        this.latitude = location.getLatitude();
     }
 
     public double getLongitude() {

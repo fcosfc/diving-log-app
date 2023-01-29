@@ -56,6 +56,17 @@ public class AppRepository {
         refreshDiveList();
     }
 
+    public static void save(DiveLocation diveLocation) throws LocationAlreadyExistsException {
+        if (locationMapByName != null && !locationMapByName.isEmpty()) {
+            if (locationMapByName.get(diveLocation.getName()) != null) {
+                throw new LocationAlreadyExistsException();
+            }
+        }
+        diveDbHelper.save(diveLocation);
+
+        refreshLocationList();
+    }
+
     public static void delete(Dive dive) {
         diveDbHelper.delete(dive.getDiveId());
 
@@ -69,8 +80,10 @@ public class AppRepository {
     private static List<String> getLocationListFromMap(Map<Integer, DiveLocation> input) {
         List<String> output = new ArrayList<>();
 
-        for(DiveLocation diveLocation : input.values()) {
-            output.add(diveLocation.getName());
+        if (input != null && !input.isEmpty()) {
+            for (DiveLocation diveLocation : input.values()) {
+                output.add(diveLocation.getName());
+            }
         }
 
         return output;
@@ -79,8 +92,12 @@ public class AppRepository {
     private static Map<String, DiveLocation> getLocationMapByName(Map<Integer, DiveLocation> input) {
         Map<String, DiveLocation> output = new HashMap<>();
 
-        for(DiveLocation diveLocation : input.values()) {
-            output.put(diveLocation.getName(), diveLocation);
+        if (input != null && !input.isEmpty()) {
+            for (DiveLocation diveLocation : input.values()) {
+                output.put(diveLocation.getName(), diveLocation);
+            }
+
+
         }
 
         return output;

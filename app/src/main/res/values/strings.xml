@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Registro de buceo</string>
     <string name="place">Lugar</string>
-    <string name="diveLocation">Localidad</string>
+    <string name="dive_location">Localidad</string>
     <string name="spot">Punto de inmersión</string>
     <string name="dive_date">Fecha</string>
     <string name="minutes">Minutos</string>
@@ -34,6 +34,9 @@
     <string name="wind_speed">Viento</string>
     <string name="clouds">Nubes</string>
     <string name="internet_permission">No hay permiso para acceder a Internet. No podré obtener las condiciones meteo</string>
-    <string name="geo_permission">No hay permiso para obtener la localización. No podré proporcionar la localización de la inmersión por defecto</string>
+    <string name="geo_permission">No hay permiso para obtener la localización. No podré proporcionar la localización de la inmersión por defecto, ni añadir nuevas localizaciones</string>
     <string name="dive_share_message">Me gustaría compartir contigo los datos de esta inmersión</string>
+    <string name="form_has_errors">Revise por favor los datos. Faltan datos o son erróneos</string>
+    <string name="no_permissions">No se tienen los permisos necesarios para realizar la acción</string>
+    <string name="location_already_exists_error">La localización ya está en la lista</string>
 </resources>

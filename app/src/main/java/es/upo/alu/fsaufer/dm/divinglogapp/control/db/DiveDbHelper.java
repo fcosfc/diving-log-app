@@ -52,8 +52,6 @@ public class DiveDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         createTables(db);
-
-        loadDemoData(db);
     }
 
     @Override
@@ -62,8 +60,6 @@ public class DiveDbHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + DIVES_TABLE_NAME);
         }
         createTables(db);
-
-        loadDemoData(db);
     }
 
     public Map<Integer, DiveLocation> readAllLocations() {
@@ -146,6 +142,10 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         } else {
             updateDive(getDivingLogDatabase(), values, dive.getDiveId());
         }
+    }
+
+    public void save(DiveLocation diveLocation) {
+        insertLocation(getDivingLogDatabase(), getLocationContentValues(diveLocation));
     }
 
     private SQLiteDatabase getDivingLogDatabase() {

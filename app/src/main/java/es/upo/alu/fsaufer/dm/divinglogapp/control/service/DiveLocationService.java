@@ -61,27 +61,30 @@ public class DiveLocationService {
     }
 
     public static String getNearestLocationName() {
-        String nearestLocationName = null;
-        Location start = getCurrentGeoLocation();
-        Location location = new Location(Constant.LOCATION_PROVIDER);
-        float minDistanceTo = Float.MAX_VALUE;
+        if (isLocationAvailable()) {
+            String nearestLocationName = null;
+            Location start = getCurrentGeoLocation();
+            Location location = new Location(Constant.LOCATION_PROVIDER);
+            float minDistanceTo = Float.MAX_VALUE;
 
-        for (DiveLocation diveLocation : AppRepository.getLocationMap().values()) {
-            location.setLongitude(diveLocation.getLocation().getLongitude());
-            location.setLatitude(diveLocation.getLocation().getLatitude());
-            float distance = start.distanceTo(location);
-            if (distance < minDistanceTo) {
-                minDistanceTo = distance;
+            for (DiveLocation diveLocation : AppRepository.getLocationMap().values()) {
+                location.setLongitude(diveLocation.getLocation().getLongitude());
+                location.setLatitude(diveLocation.getLocation().getLatitude());
+                float distance = start.distanceTo(location);
+                if (distance < minDistanceTo) {
+                    minDistanceTo = distance;
 
-                nearestLocationName = diveLocation.getName();
+                    nearestLocationName = diveLocation.getName();
+                }
             }
-        }
 
-        if (minDistanceTo < MAX_DISTANCE_METERS) {
-            return nearestLocationName;
+            if (minDistanceTo < MAX_DISTANCE_METERS) {
+                return nearestLocationName;
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
-
     }
 }

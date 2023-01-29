@@ -26,7 +26,7 @@ public class DiveSharingService {
     private static String getDiveData(Context context, Dive dive) {
         StringBuilder builder = new StringBuilder();
         builder.append(context.getString(R.string.dive_share_message)).append(":\n");
-        builder.append(context.getString(R.string.diveLocation)).append(": ").append(dive.getLocation().getName()).append("\n");
+        builder.append(context.getString(R.string.dive_location)).append(": ").append(dive.getLocation().getName()).append("\n");
         builder.append(context.getString(R.string.spot)).append(": ").append(dive.getSpot()).append("\n");
         builder.append(context.getString(R.string.dive_date)).append(": ").append(dive.getFormattedDiveDate()).append("\n");
         builder.append(context.getString(R.string.weather_conditions)).append(": ").append(dive.getWeatherConditions().toString()).append("\n");

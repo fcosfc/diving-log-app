@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -28,11 +29,13 @@ import java.util.List;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.db.AppRepository;
-import es.upo.alu.fsaufer.dm.divinglogapp.control.service.WeatherService;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.db.LocationAlreadyExistsException;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.service.DiveLocationService;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.service.WeatherService;
 import es.upo.alu.fsaufer.dm.divinglogapp.dto.WeatherServiceResponse;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.DiveLocation;
+import es.upo.alu.fsaufer.dm.divinglogapp.entity.GeoLocation;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.WeatherConditions;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
@@ -44,6 +47,8 @@ import retrofit2.Response;
  * Actividad para guardar nuevas inmersiones o editar existentes
  */
 public class EditDiveActivity extends AppCompatActivity {
+
+    private ArrayAdapter<String> locationAdapter;
 
     private int formResult = RESULT_CANCELED;
 
@@ -63,15 +68,14 @@ public class EditDiveActivity extends AppCompatActivity {
 
         List<String> locationList = AppRepository.getLocationList();
         location = findViewById(R.id.locationSpinner);
-        ArrayAdapter<String> locationAdapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locationList);
+        locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locationList);
         location.setAdapter(locationAdapter);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PERMISSION_GRANTED) {
             location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (!isEdition) {
-                        readCurrentWeatherConditions(AppRepository.getLocation(locationList.get(position)));
+                        readCurrentWeatherConditions(AppRepository.getLocation(locationList.get(position)).getLocation());
                     }
                 }
 
@@ -94,10 +98,10 @@ public class EditDiveActivity extends AppCompatActivity {
         nitroxUse = findViewById(R.id.nitroxUseCheckBox);
         remarks = findViewById(R.id.remarksEditTextTextMultiLine);
 
+        DiveLocationService.init(this);
         if (getIntent().getSerializableExtra(Constant.DIVE) == null) {
             dive = new Dive();
 
-            DiveLocationService.init(this);
             if (DiveLocationService.isLocationAvailable()) {
                 String nearestLocationName = DiveLocationService.getNearestLocationName();
                 if (nearestLocationName != null) {
@@ -123,6 +127,9 @@ public class EditDiveActivity extends AppCompatActivity {
         Button cancelButton = findViewById(R.id.canceButton);
         cancelButton.setOnClickListener(this::cancel);
 
+        ImageButton addLocationImageButton = findViewById(R.id.addLocationImageButton);
+        addLocationImageButton.setOnClickListener(v -> addCurrentLocation());
+
         diveDate.setOnClickListener(v -> showDatePicker());
     }
 
@@ -138,7 +145,11 @@ public class EditDiveActivity extends AppCompatActivity {
         boolean formHasErrors = false;
 
         textValue = (String) location.getSelectedItem();
-        dive.setLocation(AppRepository.getLocation(textValue));
+        if (textValue == null) {
+            formHasErrors = true;
+        } else {
+            dive.setLocation(AppRepository.getLocation(textValue));
+        }
 
         textValue = spot.getText().toString().trim();
         if (textValue.isEmpty()) {
@@ -195,12 +206,17 @@ public class EditDiveActivity extends AppCompatActivity {
         } else if (badWeatherConditions.isChecked()) {
             dive.setWeatherConditions(WeatherConditions.BAD);
         }
+        if (dive.getWeatherConditions() == null) {
+            formHasErrors = true;
+        }
 
         dive.setNitroxUse(nitroxUse.isChecked());
 
         dive.setRemarks(remarks.getText().toString().trim());
 
-        if (!formHasErrors) {
+        if (formHasErrors) {
+            Toast.makeText(getApplicationContext(), R.string.form_has_errors, Toast.LENGTH_SHORT).show();
+        } else {
             AppRepository.save(dive);
 
             formResult = RESULT_OK;
@@ -234,19 +250,44 @@ public class EditDiveActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void readCurrentWeatherConditions(DiveLocation diveLocation) {
-        Call<WeatherServiceResponse> weatherServiceCall =
-                WeatherService.getApi().getCurrentWeather(Constant.WEATHER_SERVICE_API_KEY,
-                        Constant.WEATHER_SERVICE_UNITS,
-                        diveLocation.getLocation().getFormattedLongitude(),
-                        diveLocation.getLocation().getFormattedLatitude());
+    private void addCurrentLocation() {
+        if (DiveLocationService.isLocationAvailable() &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PERMISSION_GRANTED) {
+            GeoLocation geoLocation = new GeoLocation(DiveLocationService.getCurrentGeoLocation());
 
-        weatherServiceCall.enqueue(new Callback<WeatherServiceResponse>() {
+            getWeatherServiceCall(geoLocation).enqueue(new Callback<WeatherServiceResponse>() {
+                @Override
+                public void onResponse(Call<WeatherServiceResponse> call, Response<WeatherServiceResponse> response) {
+                    DiveLocation diveLocation = new DiveLocation();
+                    diveLocation.setName(response.body().getName());
+                    diveLocation.setLocation(geoLocation);
+
+                    try {
+                        AppRepository.save(diveLocation);
+
+                        locationAdapter.add(diveLocation.getName());
+                    } catch (LocationAlreadyExistsException ex) {
+                        Toast.makeText(getApplicationContext(), R.string.location_already_exists_error, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<WeatherServiceResponse> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), R.string.weather_service_error, Toast.LENGTH_LONG).show();
+
+                    Log.e("WeatherService", call.toString(), t);
+                }
+            });
+        } else {
+            Toast.makeText(this, R.string.no_permissions, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void readCurrentWeatherConditions(GeoLocation geoLocation) {
+        getWeatherServiceCall(geoLocation).enqueue(new Callback<WeatherServiceResponse>() {
             @Override
             public void onResponse(Call<WeatherServiceResponse> call, Response<WeatherServiceResponse> response) {
                 WeatherServiceResponse weatherServiceResponse = response.body();
-
-                Log.i("WeatherService", weatherServiceResponse.toString());
 
                 setWeatherConditions(inferWeatherConditions(weatherServiceResponse));
 
@@ -270,6 +311,13 @@ public class EditDiveActivity extends AppCompatActivity {
                 return builder.toString();
             }
         });
+    }
+
+    private Call<WeatherServiceResponse> getWeatherServiceCall(GeoLocation geoLocation) {
+        return WeatherService.getApi().getCurrentWeather(Constant.WEATHER_SERVICE_API_KEY,
+                Constant.WEATHER_SERVICE_UNITS,
+                geoLocation.getFormattedLongitude(),
+                geoLocation.getFormattedLatitude());
     }
 
     private WeatherConditions inferWeatherConditions(WeatherServiceResponse weatherServiceResponse) {
