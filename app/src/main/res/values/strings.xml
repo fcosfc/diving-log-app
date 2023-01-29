@@ -21,6 +21,7 @@
     <string name="delete_dive">Borrar inmersión</string>
     <string name="delete_dive_confirmation">¿Borrar inmersión?</string>
     <string name="delete_dive_confirmation_message">¿Está seguro de querer eliminar la inmersión del registro?</string>
+    <string name="share_dive">Compartir inmersión</string>
     <string name="not_null">Este campo no puede ser nulo</string>
     <string name="date_not_valid">No es un fecha válida (yyyy-mm-dd)</string>
     <string name="saved">Registro guardado</string>
@@ -34,4 +35,5 @@
     <string name="clouds">Nubes</string>
     <string name="internet_permission">No hay permiso para acceder a Internet. No podré obtener las condiciones meteo</string>
     <string name="geo_permission">No hay permiso para obtener la localización. No podré proporcionar la localización de la inmersión por defecto</string>
+    <string name="dive_share_message">Me gustaría compartir contigo los datos de esta inmersión</string>
 </resources>

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.DiveSharingService;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.db.AppRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
@@ -66,6 +67,11 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
                     return true;
                 case R.id.delete_dive:
                     deleteDive(selectedDive);
+
+                    mode.finish();
+                    return true;
+                case R.id.share_dive:
+                    shareDive(selectedDive);
 
                     mode.finish();
                     return true;
@@ -169,6 +175,14 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
                 }
             });
             alert.show();
+        }
+    }
+
+    private void shareDive(Dive dive) {
+        if (dive != null) {
+            adapter.clearSelectedItem();
+
+            DiveSharingService.share(this, dive);
         }
     }
 }

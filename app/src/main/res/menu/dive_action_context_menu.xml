@@ -18,6 +18,12 @@
         android:id="@+id/delete_dive"
         android:icon="@drawable/ic_baseline_delete_24"
         android:title="@string/delete_dive"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/share_dive"
+        android:icon="@drawable/ic_baseline_share_24"
+        android:title="@string/share_dive"
+        app:showAsAction="ifRoom"/>
 
 </menu>
