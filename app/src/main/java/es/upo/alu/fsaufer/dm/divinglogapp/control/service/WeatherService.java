@@ -1,4 +1,4 @@
-package es.upo.alu.fsaufer.dm.divinglogapp.control.rest;
+package es.upo.alu.fsaufer.dm.divinglogapp.control.service;
 
 import java.util.concurrent.TimeUnit;
 

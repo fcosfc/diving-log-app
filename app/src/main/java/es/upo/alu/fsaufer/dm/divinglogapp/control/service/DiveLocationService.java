@@ -1,4 +1,4 @@
-package es.upo.alu.fsaufer.dm.divinglogapp.control.sensor;
+package es.upo.alu.fsaufer.dm.divinglogapp.control.service;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -19,7 +19,7 @@ import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 /**
  * Servicio de gestión de localizaciones geográficas.
  */
-public class DivingLocationService {
+public class DiveLocationService {
 
     private static final float MAX_DISTANCE_METERS = 5000; // Cinco kilómetros
     private static final float MIN_DISTANCE_METERS = 1000; // Un kilómetro

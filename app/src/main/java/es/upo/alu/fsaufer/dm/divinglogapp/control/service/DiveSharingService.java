@@ -1,4 +1,4 @@
-package es.upo.alu.fsaufer.dm.divinglogapp.control;
+package es.upo.alu.fsaufer.dm.divinglogapp.control.service;
 
 import android.content.Context;
 import android.content.Intent;

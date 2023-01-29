@@ -28,8 +28,8 @@ import java.util.List;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.db.AppRepository;
-import es.upo.alu.fsaufer.dm.divinglogapp.control.rest.WeatherService;
-import es.upo.alu.fsaufer.dm.divinglogapp.control.sensor.DivingLocationService;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.service.WeatherService;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.service.DiveLocationService;
 import es.upo.alu.fsaufer.dm.divinglogapp.dto.WeatherServiceResponse;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.DiveLocation;
@@ -97,9 +97,9 @@ public class EditDiveActivity extends AppCompatActivity {
         if (getIntent().getSerializableExtra(Constant.DIVE) == null) {
             dive = new Dive();
 
-            DivingLocationService.init(this);
-            if (DivingLocationService.isLocationAvailable()) {
-                String nearestLocationName = DivingLocationService.getNearestLocationName();
+            DiveLocationService.init(this);
+            if (DiveLocationService.isLocationAvailable()) {
+                String nearestLocationName = DiveLocationService.getNearestLocationName();
                 if (nearestLocationName != null) {
                     location.setSelection(locationList.indexOf(nearestLocationName));
                 }
