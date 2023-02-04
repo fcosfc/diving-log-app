@@ -29,7 +29,19 @@ public class DiveSharingService {
         builder.append(context.getString(R.string.dive_location)).append(": ").append(dive.getLocation().getName()).append("\n");
         builder.append(context.getString(R.string.spot)).append(": ").append(dive.getSpot()).append("\n");
         builder.append(context.getString(R.string.dive_date)).append(": ").append(dive.getFormattedDiveDate()).append("\n");
-        builder.append(context.getString(R.string.weather_conditions)).append(": ").append(dive.getWeatherConditions().toString()).append("\n");
+        builder.append(context.getString(R.string.weather_conditions)).append(": ");
+        switch (dive.getWeatherConditions()) {
+            case GOOD:
+                builder.append(context.getString(R.string.good));
+                break;
+            case TOLERABLE:
+                builder.append(context.getString(R.string.tolerable));
+                break;
+            case BAD:
+                builder.append(context.getString(R.string.bad));
+                break;
+        }
+        builder.append("\n");
         builder.append(context.getString(R.string.minutes)).append(": ").append(dive.getMinutes()).append("\n");
         builder.append(context.getString(R.string.max_depth)).append(": ").append(dive.getMaxDepth()).append("\n");
         builder.append(dive.isNitroxUse() ? context.getString(R.string.nitrox_use) : context.getString(R.string.without_nitrox_use)).append("\n");
