@@ -1,26 +1,18 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.control.db;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.location.Location;
-import android.os.Build;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.DiveLocation;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.GeoLocation;
@@ -32,21 +24,16 @@ import es.upo.alu.fsaufer.dm.divinglogapp.util.DateUtil;
  * Clase que implementa la persistencia de la APP
  */
 public class DiveDbHelper extends SQLiteOpenHelper {
-
-    private static final int DEMO_DATA_LOADED_NOTIFICATION_ID = 1;
-
     private static final String DATABASE_NAME = "DivingLog.db";
     private static final int DATABASE_VERSION = 2;
 
     private static final String DIVES_TABLE_NAME = "dives";
     private static final String LOCATIONS_TABLE_NAME = "locations";
 
-    private final Context context;
     private SQLiteDatabase divingLogDatabase = null;
 
     public DiveDbHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
     @Override
@@ -56,23 +43,22 @@ public class DiveDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldDbVersion, int newDbVersion) {
-        if ((oldDbVersion == DATABASE_VERSION - 1) && (newDbVersion == DATABASE_VERSION)) {
-            db.execSQL("DROP TABLE IF EXISTS " + DIVES_TABLE_NAME);
-        }
-        createTables(db);
+        resetDivingLogDatabase(db);
+    }
+
+    public void resetDivingLogDatabase() {
+        SQLiteDatabase db = getDivingLogDatabase();
+
+        resetDivingLogDatabase(db);
     }
 
     public Map<Integer, DiveLocation> readAllLocations() {
-        return readAllLocations(getDivingLogDatabase());
-    }
-
-    public Map<Integer, DiveLocation> readAllLocations(SQLiteDatabase db) {
         Map<Integer, DiveLocation> locationMap = null;
         String[] columns = new String[]{
                 Constant.LOCATION_ID, Constant.NAME, Constant.LONGITUDE, Constant.LATITUDE
         };
 
-        Cursor cursor = db.query(LOCATIONS_TABLE_NAME, columns, null, null, null, null, Constant.NAME);
+        Cursor cursor = getDivingLogDatabase().query(LOCATIONS_TABLE_NAME, columns, null, null, null, null, Constant.NAME);
 
         if (cursor.getCount() != 0) {
             locationMap = new HashMap<>();
@@ -84,7 +70,6 @@ public class DiveDbHelper extends SQLiteOpenHelper {
                 diveLocation.setLocationId(cursor.getInt(0));
                 diveLocation.setName(cursor.getString(1));
 
-                Location location = new Location(Constant.LOCATION_PROVIDER);
                 diveLocation.setLocation(
                         new GeoLocation(cursor.getFloat(2),
                                 cursor.getFloat(3)));
@@ -148,6 +133,14 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         insertLocation(getDivingLogDatabase(), getLocationContentValues(diveLocation));
     }
 
+    public void loadDemoData() {
+        SQLiteDatabase db = getDivingLogDatabase();
+
+        resetDivingLogDatabase(db);
+        Map<Integer, DiveLocation> locationMap = loadDemoLocations(db);
+        loadDemoDives(db, locationMap);
+    }
+
     private SQLiteDatabase getDivingLogDatabase() {
         if (divingLogDatabase == null) {
             divingLogDatabase = getWritableDatabase();
@@ -197,7 +190,17 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         return values;
     }
 
+    private void resetDivingLogDatabase(SQLiteDatabase db) {
+        dropTables(db);
+        createTables(db);
+    }
+
     private void createTables(SQLiteDatabase db) {
+        createLocationsTable(db);
+        createDivesTable(db);
+    }
+
+    private void createLocationsTable(SQLiteDatabase db) {
         StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("CREATE TABLE ").append(LOCATIONS_TABLE_NAME);
         sqlBuilder.append(" (");
@@ -207,8 +210,10 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         sqlBuilder.append(Constant.LATITUDE).append(" real not null");
         sqlBuilder.append(")");
         db.execSQL(sqlBuilder.toString());
+    }
 
-        sqlBuilder = new StringBuilder();
+    private void createDivesTable(SQLiteDatabase db) {
+        StringBuilder sqlBuilder = new StringBuilder();
         sqlBuilder.append("CREATE TABLE ").append(DIVES_TABLE_NAME);
         sqlBuilder.append(" (");
         sqlBuilder.append(Constant.DIVE_ID).append(" integer primary key autoincrement, ");
@@ -226,11 +231,9 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         db.execSQL(sqlBuilder.toString());
     }
 
-    private void loadDemoData(SQLiteDatabase db) {
-        Map<Integer, DiveLocation> locationMap = loadDemoLocations(db);
-        loadDemoDives(db, locationMap);
-
-        notifyDemoDataLoaded();
+    private void dropTables(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + DIVES_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + LOCATIONS_TABLE_NAME);
     }
 
     private Map<Integer, DiveLocation> loadDemoLocations(SQLiteDatabase db) {
@@ -240,7 +243,7 @@ public class DiveDbHelper extends SQLiteOpenHelper {
             insertLocation(db, getLocationContentValues(diveLocation));
         }
 
-        return readAllLocations(db);
+        return readAllLocations();
     }
 
     List<DiveLocation> getDemoLocationList() {
@@ -308,34 +311,6 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         }
 
         return newLocationMap;
-    }
-
-    private void notifyDemoDataLoaded() {
-        createNotificationChannel();
-
-        NotificationManagerCompat.from(context).notify(DEMO_DATA_LOADED_NOTIFICATION_ID, buildNotification());
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    Constant.DIVING_LOG_CHANNEL_ID,
-                    context.getString(R.string.notification_channel_name),
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription(context.getString(R.string.notification_channel_description));
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    private Notification buildNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Constant.DIVING_LOG_CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle(context.getString(R.string.notification_demo_data_loaded_title))
-                .setContentText(context.getString(R.string.notification_demo_data_loaded_text))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        return builder.build();
     }
 
 }

@@ -1,6 +1,5 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.boundary;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ActionMode;
@@ -9,8 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -20,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
-import es.upo.alu.fsaufer.dm.divinglogapp.control.service.DiveSharingService;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.db.AppRepository;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.service.DiveSharingService;
 import es.upo.alu.fsaufer.dm.divinglogapp.entity.Dive;
 import es.upo.alu.fsaufer.dm.divinglogapp.util.Constant;
 
@@ -100,12 +97,9 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
 
         editDiveLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == RESULT_OK) {
-                            adapter.notifyDataSetChanged();
-                        }
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        adapter.notifyDataSetChanged();
                     }
                 }
         );
@@ -162,18 +156,12 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle(R.string.delete_dive_confirmation);
             alert.setMessage(R.string.delete_dive_confirmation_message);
-            alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    AppRepository.delete(dive);
+            alert.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                AppRepository.delete(dive);
 
-                    adapter.notifyDataSetChanged();
-                }
+                adapter.notifyDataSetChanged();
             });
-            alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+            alert.setNegativeButton(android.R.string.no, (dialog, which) -> dialog.cancel());
             alert.show();
         }
     }

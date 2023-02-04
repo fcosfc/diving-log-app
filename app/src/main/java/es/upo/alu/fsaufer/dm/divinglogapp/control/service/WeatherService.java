@@ -38,13 +38,12 @@ public class WeatherService {
     }
 
     private static void createInstance() {
-        if (api == null) {
-            synchronized (WeatherService.class) {
-                if (api == null) {
-                    api = buildApiClient();
-                }
+        synchronized (WeatherService.class) {
+            if (api == null) {
+                api = buildApiClient();
             }
         }
+
     }
 
     private static ApiInterface buildApiClient() {
