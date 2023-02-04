@@ -246,7 +246,7 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         return readAllLocations();
     }
 
-    List<DiveLocation> getDemoLocationList() {
+    private List<DiveLocation> getDemoLocationList() {
         List<DiveLocation> demoDiveLocationList = new ArrayList<>();
         DiveLocation diveLocation;
 

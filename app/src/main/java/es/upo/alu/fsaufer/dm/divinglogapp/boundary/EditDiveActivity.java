@@ -30,6 +30,7 @@ import java.util.List;
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.db.AppRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.db.LocationAlreadyExistsException;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.service.ConfigService;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.service.DiveLocationService;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.service.WeatherService;
 import es.upo.alu.fsaufer.dm.divinglogapp.dto.WeatherServiceResponse;
@@ -108,6 +109,7 @@ public class EditDiveActivity extends AppCompatActivity {
                     location.setSelection(locationList.indexOf(nearestLocationName));
                 }
             }
+            nitroxUse.setChecked(ConfigService.getConfigParameters(this).isNitroxUseByDefault());
         } else {
             isEdition = true;
             dive = (Dive) getIntent().getSerializableExtra(Constant.DIVE);

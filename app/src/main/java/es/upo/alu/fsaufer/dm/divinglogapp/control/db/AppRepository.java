@@ -77,6 +77,20 @@ public class AppRepository {
         diveList = diveDbHelper.readAllDives(locationMapById);
     }
 
+    public static void loadDemoData() {
+        diveDbHelper.loadDemoData();
+
+        refreshLocationList();
+        refreshDiveList();
+    }
+
+    public static void reset() {
+        diveDbHelper.resetDivingLogDatabase();
+
+        refreshLocationList();
+        refreshDiveList();
+    }
+
     private static List<String> getLocationListFromMap(Map<Integer, DiveLocation> input) {
         List<String> output = new ArrayList<>();
 

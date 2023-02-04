@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
 
     private DiveListAdapter adapter;
 
-    private ActivityResultLauncher<Intent> editDiveLauncher;
+    private ActivityResultLauncher<Intent> appActivityLauncher;
 
     private Dive selectedDive = null;
 
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
 
         AppRepository.init(this);
 
-        editDiveLauncher = registerForActivityResult(
+        appActivityLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
@@ -114,7 +114,11 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        editDive(null);
+        if (item.getItemId() == R.id.new_dive) {
+            editDive(null);
+        } else {
+            viewConfig();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -132,9 +136,8 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
             intent.putExtra(Constant.DIVE, dive);
         }
 
-        editDiveLauncher.launch(intent);
+        appActivityLauncher.launch(intent);
 
-        adapter.notifyDataSetChanged();
         adapter.clearSelectedItem();
     }
 
@@ -172,5 +175,11 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
 
             DiveSharingService.share(this, dive);
         }
+    }
+
+    private void viewConfig() {
+        Intent intent = new Intent(this, ConfigActivity.class);
+
+        appActivityLauncher.launch(intent);
     }
 }

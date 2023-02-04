@@ -8,4 +8,9 @@
         android:title="@string/new_dive"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/config"
+        android:title="@string/config"
+        app:showAsAction="never"/>
+
 </menu>

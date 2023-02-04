@@ -39,4 +39,8 @@
     <string name="form_has_errors">Revise por favor los datos. Faltan datos o son erróneos</string>
     <string name="no_permissions">No se tienen los permisos necesarios para realizar la acción</string>
     <string name="location_already_exists_error">La localización ya está en la lista</string>
+    <string name="demo_mode">¿Modo demostración?</string>
+    <string name="nitrox_use_by_default">¿Usar nitrox por defecto?</string>
+    <string name="config">Configuración</string>
+    <string name="config_saved">Configuración guardada</string>
 </resources>

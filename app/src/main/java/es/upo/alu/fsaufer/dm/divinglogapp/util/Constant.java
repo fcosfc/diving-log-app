@@ -5,6 +5,10 @@ public class Constant {
 
     public static final String DIVING_LOG_CHANNEL_ID = "divinglogchannel";
 
+    public static final String CONFIG_PARAMS_FILE_ID = "diving_log_config";
+    public static final String CONFIG_PARAM_DEBUB_MODE = "is_debug_mode";
+    public static final String CONFIG_PARAM_NITROX_USE = "is_nitrox_use_by_default";
+
     public static final String DIVE = "dive";
     public static final String DIVE_ID = "dive_id";
     public static final String SPOT = "spot";
