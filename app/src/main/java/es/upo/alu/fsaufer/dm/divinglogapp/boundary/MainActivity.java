@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.db.AppRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.service.DiveSharingService;
@@ -93,8 +95,6 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
         adapter = new DiveListAdapter(this);
         recyclerView.setAdapter(adapter);
 
-        AppRepository.init(this);
-
         appActivityLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -103,6 +103,12 @@ public class MainActivity extends AppCompatActivity implements DiveClickListener
                     }
                 }
         );
+
+        AppRepository.init(this);
+
+        if (AppRepository.getDiveList() == null || AppRepository.getDiveList().isEmpty()) {
+            Snackbar.make(recyclerView, R.string.notification_data_reset_text, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import es.upo.alu.fsaufer.dm.divinglogapp.R;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.db.AppRepository;
 import es.upo.alu.fsaufer.dm.divinglogapp.control.service.ConfigService;
+import es.upo.alu.fsaufer.dm.divinglogapp.control.service.DiveNotificationService;
 
 public class ConfigActivity extends AppCompatActivity {
 
@@ -45,10 +46,18 @@ public class ConfigActivity extends AppCompatActivity {
                 !demoMode.isChecked()) {
             AppRepository.reset();
 
+            DiveNotificationService.notify(this,
+                    getString(R.string.notification_data_reset_title),
+                    getString(R.string.notification_data_reset_text));
+
             formResult = RESULT_OK;
         } else if (!ConfigService.getConfigParameters(this).isDemoMode() &&
                 demoMode.isChecked()) {
             AppRepository.loadDemoData();
+
+            DiveNotificationService.notify(this,
+                    getString(R.string.notification_demo_data_loaded_title),
+                    getString(R.string.notification_demo_data_loaded_text));
 
             formResult = RESULT_OK;
         }

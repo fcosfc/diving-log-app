@@ -20,6 +20,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -85,7 +87,7 @@ public class EditDiveActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(getApplicationContext(), R.string.internet_permission, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.internet_permission, Toast.LENGTH_LONG).show();
         }
 
         spot = findViewById(R.id.spotEditText);
@@ -217,13 +219,13 @@ public class EditDiveActivity extends AppCompatActivity {
         dive.setRemarks(remarks.getText().toString().trim());
 
         if (formHasErrors) {
-            Toast.makeText(getApplicationContext(), R.string.form_has_errors, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.form_has_errors, Toast.LENGTH_SHORT).show();
         } else {
             AppRepository.save(dive);
 
             formResult = RESULT_OK;
 
-            Toast.makeText(getApplicationContext(), getString(R.string.saved), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
 
             finish();
         }
@@ -293,7 +295,7 @@ public class EditDiveActivity extends AppCompatActivity {
 
                 setWeatherConditions(inferWeatherConditions(weatherServiceResponse));
 
-                Toast.makeText(getApplicationContext(), getCurrentWeatherMessage(weatherServiceResponse), Toast.LENGTH_LONG).show();
+                Snackbar.make(location, getCurrentWeatherMessage(weatherServiceResponse), Snackbar.LENGTH_LONG).show();
             }
 
             @Override
