@@ -250,9 +250,6 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         List<DiveLocation> demoDiveLocationList = new ArrayList<>();
         DiveLocation diveLocation;
 
-        diveLocation = new DiveLocation("Algeciras", new GeoLocation(-5.4928738, 36.1310078));
-        demoDiveLocationList.add(diveLocation);
-
         diveLocation = new DiveLocation("Ceuta", new GeoLocation(-5.3360354, 35.8890551));
         demoDiveLocationList.add(diveLocation);
 
@@ -293,11 +290,21 @@ public class DiveDbHelper extends SQLiteOpenHelper {
         demoDiveList.add(dive);
         dive = new Dive(locationMapByName.get("Tarifa"), "La Garita", DateUtil.parseDate("2022-06-01"), 55, 15.2f, WeatherConditions.TOLERABLE, false, "Bancos de peces");
         demoDiveList.add(dive);
-        dive = new Dive(locationMapByName.get("Algeciras"), "Bajo del Bono", DateUtil.parseDate("2022-06-12"), 48, 38.2f, WeatherConditions.GOOD, true, "Magnífica inmersión");
+        dive = new Dive(locationMapByName.get("Tarifa"), "Punta marroquí", DateUtil.parseDate("2022-06-12"), 48, 38.2f, WeatherConditions.GOOD, true, "Magnífica inmersión");
         demoDiveList.add(dive);
         dive = new Dive(locationMapByName.get("Tarifa"), "La Garita", DateUtil.parseDate("2022-07-24"), 55, 15.2f, WeatherConditions.GOOD, false, "Buena inmersión");
         demoDiveList.add(dive);
         dive = new Dive(locationMapByName.get("Tarifa"), "San Andrés", DateUtil.parseDate("2022-08-06"), 38, 45.3f, WeatherConditions.GOOD, false, "Espectacular inmersión");
+        demoDiveList.add(dive);
+        dive = new Dive(locationMapByName.get("Ceuta"), "Ciclón de fuera", DateUtil.parseDate("2022-09-01"), 38, 40f, WeatherConditions.GOOD, true, "Magnífica inmersión");
+        demoDiveList.add(dive);
+        dive = new Dive(locationMapByName.get("Ceuta"), "Ciclón de dentro", DateUtil.parseDate("2022-09-01"), 29, 16.1f, WeatherConditions.GOOD, true, "Nada especial");
+        demoDiveList.add(dive);
+        dive = new Dive(locationMapByName.get("Ceuta"), "Perejil", DateUtil.parseDate("2022-09-02"), 45, 33f, WeatherConditions.TOLERABLE, true, "Bancos de peces");
+        demoDiveList.add(dive);
+        dive = new Dive(locationMapByName.get("Ceuta"), "La peña", DateUtil.parseDate("2022-09-02"), 34, 12.1f, WeatherConditions.GOOD, true, "Bonita inmersión");
+        demoDiveList.add(dive);
+        dive = new Dive(locationMapByName.get("Tarifa"), "La Garita", DateUtil.parseDate("2022-09-14"), 60, 15f, WeatherConditions.GOOD, false, "Buena inmersión");
         demoDiveList.add(dive);
 
         return demoDiveList;

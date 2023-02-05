@@ -251,6 +251,8 @@ public class EditDiveActivity extends AppCompatActivity {
                         AppRepository.save(diveLocation);
 
                         setUpLocation(AppRepository.getLocationList());
+
+                        location.setSelection(AppRepository.getLocationList().indexOf(diveLocation.getName()));
                     } catch (LocationAlreadyExistsException ex) {
                         Toast.makeText(getApplicationContext(), R.string.location_already_exists_error, Toast.LENGTH_LONG).show();
                     }

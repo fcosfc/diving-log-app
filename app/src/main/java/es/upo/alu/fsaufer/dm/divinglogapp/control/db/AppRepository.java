@@ -1,6 +1,7 @@
 package es.upo.alu.fsaufer.dm.divinglogapp.control.db;
 
 import android.content.Context;
+import android.os.Build;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,6 +101,10 @@ public class AppRepository {
             }
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            output.sort(String.CASE_INSENSITIVE_ORDER);
+        }
+
         return output;
     }
 
@@ -110,8 +115,6 @@ public class AppRepository {
             for (DiveLocation diveLocation : input.values()) {
                 output.put(diveLocation.getName(), diveLocation);
             }
-
-
         }
 
         return output;
