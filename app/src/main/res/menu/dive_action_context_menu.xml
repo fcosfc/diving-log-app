@@ -4,25 +4,25 @@
 
     <item
         android:id="@+id/view_dive"
-        android:icon="@drawable/ic_baseline_preview_24"
+        android:icon="@drawable/ic_outline_preview_24"
         android:title="@string/view_dive"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/edit_dive"
-        android:icon="@drawable/ic_baseline_edit_24"
+        android:icon="@drawable/ic_outline_edit_24"
         android:title="@string/edit_dive"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/delete_dive"
-        android:icon="@drawable/ic_baseline_delete_24"
+        android:icon="@drawable/ic_outline_delete_24"
         android:title="@string/delete_dive"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/share_dive"
-        android:icon="@drawable/ic_baseline_share_24"
+        android:icon="@drawable/ic_outline_share_24"
         android:title="@string/share_dive"
         app:showAsAction="ifRoom"/>
 

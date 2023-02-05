@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/new_dive"
-        android:icon="@drawable/ic_baseline_create_new_folder_24"
+        android:icon="@drawable/ic_outline_create_new_folder_24"
         android:title="@string/new_dive"
         app:showAsAction="ifRoom"/>
 
