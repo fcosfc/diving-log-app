@@ -51,8 +51,6 @@ import retrofit2.Response;
  */
 public class EditDiveActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> locationAdapter;
-
     private int formResult = RESULT_CANCELED;
 
     private Spinner location;
@@ -69,27 +67,7 @@ public class EditDiveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_dive);
 
-        List<String> locationList = AppRepository.getLocationList();
         location = findViewById(R.id.locationSpinner);
-        locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locationList);
-        location.setAdapter(locationAdapter);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PERMISSION_GRANTED) {
-            location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (!isEdition) {
-                        readCurrentWeatherConditions(AppRepository.getLocation(locationList.get(position)).getLocation());
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-        } else {
-            Toast.makeText(this, R.string.internet_permission, Toast.LENGTH_LONG).show();
-        }
-
         spot = findViewById(R.id.spotEditText);
         diveDate = findViewById(R.id.diveDateEditTextDate);
         diveDate.setText(DateUtil.formatDate(new Date()));
@@ -101,7 +79,10 @@ public class EditDiveActivity extends AppCompatActivity {
         nitroxUse = findViewById(R.id.nitroxUseCheckBox);
         remarks = findViewById(R.id.remarksEditTextTextMultiLine);
 
+        List<String> locationList = AppRepository.getLocationList();
         DiveLocationService.init(this);
+        setUpLocation(locationList);
+
         if (getIntent().getSerializableExtra(Constant.DIVE) == null) {
             dive = new Dive();
 
@@ -269,7 +250,7 @@ public class EditDiveActivity extends AppCompatActivity {
                     try {
                         AppRepository.save(diveLocation);
 
-                        locationAdapter.add(diveLocation.getName());
+                        setUpLocation(AppRepository.getLocationList());
                     } catch (LocationAlreadyExistsException ex) {
                         Toast.makeText(getApplicationContext(), R.string.location_already_exists_error, Toast.LENGTH_LONG).show();
                     }
@@ -367,6 +348,28 @@ public class EditDiveActivity extends AppCompatActivity {
             case BAD:
                 badWeatherConditions.setChecked(true);
                 break;
+        }
+    }
+
+    private void setUpLocation(List<String> locationList) {
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, locationList);
+        location.setAdapter(locationAdapter);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PERMISSION_GRANTED) {
+            location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (!isEdition) {
+                        readCurrentWeatherConditions(AppRepository.getLocation(locationList.get(position)).getLocation());
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } else {
+            Toast.makeText(this, R.string.internet_permission, Toast.LENGTH_LONG).show();
         }
     }
 }

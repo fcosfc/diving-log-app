@@ -32,10 +32,10 @@ public class DiveLocationService {
         if (locationManager == null) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) ==
                     PERMISSION_GRANTED) {
-                currentGeoLocation = new Location(Constant.LOCATION_PROVIDER);
-
                 locationManager =
                         (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+                currentGeoLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
                 LocationListener locationListener = location -> {
                     synchronized (location) {
